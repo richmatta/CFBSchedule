@@ -64,3 +64,13 @@
 }
 
 @media(max-width:600px){.setup-fields{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px}.setup-fields .field{min-width:0}.setup-fields input{padding-left:10px;padding-right:10px}}
+
+.team-search{margin-bottom:16px}.team-search .field{margin-bottom:8px}
+.team-search-results{border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.search-hint{padding:8px 12px;font-size:.75rem;color:var(--muted);background:var(--team-tint)}
+.team-search-results ul{list-style:none;margin:0;padding:0;max-height:156px;overflow-y:auto;overscroll-behavior:contain}
+.team-search-results li+li{border-top:1px solid var(--line)}
+.team-search-results button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:8px 12px;border:0;background:white;color:var(--ink);text-align:left}
+.team-search-results button:hover,.team-search-results button:focus-visible{background:var(--team-tint)}
+.team-search-results button:focus-visible{outline-offset:-3px}
+.team-search-results strong{display:block;font-size:.875rem}.team-search-results small{display:block;font-size:.75rem;color:var(--muted)}

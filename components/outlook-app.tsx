@@ -27,6 +27,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   const [retry,setRetry] = useState(0);
   const [favorites,setFavorites] = useState<string[]>([]);
   const [storageNotice,setStorageNotice] = useState('');
+  const [searchOpen,setSearchOpen] = useState(false);
   useEffect(()=>{
     const url = new URLSearchParams(window.location.search);
     let saved: {team?:string;year?:number} = {};
@@ -78,7 +79,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   const href = (path:string)=>`${path}?${new URLSearchParams({team,year:String(year)})}`;
   const selected=teams.find(t=>t.school===team) ?? (data?.team.school===team ? data.team : undefined);
   const changeYear=(value:number)=>{setData(null);setWeek('');setYear(value);};
-  const changeTeam=(value:string)=>{setData(null);setWeek('');setTeam(value);};
+  const changeTeam=(value:string)=>{setData(null);setWeek('');setTeam(value);setQuery('');setSearchOpen(false);};
   const isFavorite = favorites.includes(team);
   const favoriteButton = <button type="button" className="favorite-toggle" disabled={!selected||teamLoading} aria-pressed={isFavorite} aria-label={`${isFavorite?'Remove':'Add'} ${team} ${isFavorite?'from':'to'} My Teams`} title={`${isFavorite?'Remove from':'Add to'} My Teams`} onClick={()=>setFavorites(current=>current.includes(team)?current.filter(name=>name!==team):[...current,team])}><span aria-hidden="true">{isFavorite?'★':'☆'}</span></button>;
   const myTeams = <section className="my-teams" aria-label="My Teams"><div className="my-teams-heading"><h2>My Teams</h2><span>Saved in this browser</span></div>{favorites.length?<div className="favorite-list">{favorites.map(name=>{
@@ -86,7 +87,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
     return <div className="favorite-chip" key={name}><button type="button" className="favorite-switch" aria-pressed={team===name} disabled={teamLoading||!available} title={!teamLoading&&!available?`${name} is not listed as FBS in ${year}`:undefined} onClick={()=>changeTeam(name)}>{name}{!teamLoading&&!available&&<span> · Unavailable in {year}</span>}</button><button type="button" className="favorite-remove" aria-label={`Remove ${name} from My Teams`} onClick={()=>setFavorites(current=>current.filter(t=>t!==name))}>×</button></div>;
   })}</div>:<p className="muted">Use the star beside your team to save it here.</p>}{storageNotice&&<p className="muted" role="status">{storageNotice}</p>}</section>;
   const record=data?.records[team];
-  const displayedTeams=teams.filter(t=>`${t.school} ${t.mascot} ${t.conference}`.toLowerCase().includes(query.toLowerCase()));
+  const displayedTeams=teams.filter(t=>`${t.school} ${t.mascot} ${t.conference}`.toLowerCase().includes(query.trim().toLowerCase())).sort((a,b)=>Number(favorites.includes(b.school))-Number(favorites.includes(a.school)) || a.school.localeCompare(b.school));
   const nextGame=data?.games.find(g=>!g.completed&&!['canceled','cancelled'].includes(g.status??''));
   const nextOpponent=nextGame&&(nextGame.homeTeam===team?nextGame.awayTeam:nextGame.homeTeam);
   const nextPrediction=nextGame&&data?.predictions[nextGame.id];
@@ -96,9 +97,14 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
       {view==='setup'?<>
         <div className="setup-heading"><p className="intro">Use advanced metrics (SP+) to forecast your team's performance against its schedule.</p></div>
         <section className="setup-card" aria-labelledby="setup-title"><div className="section-heading"><div><p className="eyebrow">01 / MAKE IT YOURS</p><h1 id="setup-title">Pick your team</h1></div><span className="pill">FBS</span></div>
-          <div className="setup-fields"><label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label>
-          <label className="field">Find a school<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search teams or conferences"/></label></div>
-          {teamLoading?<p role="status">Loading FBS teams…</p>:<><label className="field">Team<select value={team} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{selected&&!displayedTeams.some(t=>t.school===team)&&<option value={team}>{team}</option>}{displayedTeams.map(t=><option key={t.id} value={t.school}>{t.school} {t.mascot}</option>)}</select></label><p className="muted">{query?`${displayedTeams.length} matching teams`:`${teams.length} teams in the ${year} directory`}</p></>}
+          <label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label>
+          <div className="team-search">
+            <label className="field">Choose your team<input type="search" value={query} onFocus={()=>setSearchOpen(true)} onChange={e=>{setQuery(e.target.value);setSearchOpen(true);}} onKeyDown={e=>{if(e.key==='Escape'){setSearchOpen(false);e.currentTarget.blur();}if(e.key==='Enter'&&displayedTeams.length===1){changeTeam(displayedTeams[0].school);e.currentTarget.blur();}}} placeholder={selected?`Change from ${selected.school}`:'Search schools or conferences'} aria-controls="team-search-results" autoComplete="off"/></label>
+            {teamLoading?<p className="muted" role="status">Loading FBS teams…</p>:(searchOpen||!selected)&&<div id="team-search-results" className="team-search-results">
+              <p className="search-hint" role="status">{displayedTeams.length?query.trim()?`${displayedTeams.length} matching ${displayedTeams.length===1?'team':'teams'} · Tap to choose`:'Tap a team, or type to narrow the list':'No matching teams. Try another school or conference.'}</p>
+              <ul aria-label="Matching teams">{displayedTeams.map(t=><li key={t.id}><button type="button" onClick={()=>changeTeam(t.school)}><span><strong>{t.school} {t.mascot}</strong><small>{t.conference}{favorites.includes(t.school)?' · My Teams':''}</small></span><span aria-hidden="true">→</span></button></li>)}</ul>
+            </div>}
+          </div>
           {selected&&<div className="selected-team"><Badge name={selected.abbreviation} large/><div><h3>{selected.school} {selected.mascot}</h3><p>{selected.conference}</p></div>{favoriteButton}</div>}
           {myTeams}
           {selected&&!teamLoading&&<Link className="primary-button" href={href('/schedule')}>See my season <span aria-hidden="true">→</span></Link>}
