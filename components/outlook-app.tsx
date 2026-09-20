@@ -44,10 +44,10 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
     if (!ready) return;
     const controller = new AbortController();setTeamLoading(true);setError('');setTeams([]);
     fetch(`/api/teams?year=${year}`,{signal:controller.signal}).then(async r=>{const value = await r.json();if(!r.ok)throw new Error(value.error);return value;}).then(value=>{
-      setTeams(value.teams);setDemo(value.demo);setTeam(t=>value.teams.some((x:Team)=>x.school===t)?t:'');
+      setTeams(value.teams);setDemo(value.demo);if(view==='setup')setTeam(t=>value.teams.some((x:Team)=>x.school===t)?t:'');
     }).catch(e=>{if(e.name!=='AbortError')setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setTeamLoading(false);});
     return ()=>controller.abort();
-  },[year,ready,retry]);
+  },[year,ready,retry,view]);
   useEffect(()=>{if(ready)try{localStorage.setItem('saturday-preferences',JSON.stringify({team,year}));}catch{}},[team,year,ready]);
   useEffect(()=>{
     if (!ready) return;
@@ -61,7 +61,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
     window.history.replaceState(window.history.state,'',url);
   },[team,year,ready,view]);
   const load = useCallback(async(signal:AbortSignal,background=false)=>{
-    if(!ready||teamLoading||!teams.some(t=>t.school===team)||view==='setup')return;
+    if(!ready||teamLoading||!team||view==='setup')return;
     if(!background)setLoading(true);
     try {
       const params = new URLSearchParams({team,year:String(year)});if(week&&view==='scoreboard')params.set('week',week);
@@ -76,7 +76,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
     return()=>{controller.abort();clearInterval(timer);};
   },[load]);
   const href = (path:string)=>`${path}?${new URLSearchParams({team,year:String(year)})}`;
-  const selected=teams.find(t=>t.school===team);
+  const selected=teams.find(t=>t.school===team) ?? (data?.team.school===team ? data.team : undefined);
   const changeYear=(value:number)=>{setData(null);setWeek('');setYear(value);};
   const changeTeam=(value:string)=>{setData(null);setWeek('');setTeam(value);};
   const isFavorite = favorites.includes(team);
@@ -105,7 +105,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
           {demo&&<p className="demo-note">Demo mode · Explore with illustrative football data.</p>}
         </section>
       </>:<>
-        <div className="workspace-heading"><div><p className="eyebrow">THE SEASON, IN PERSPECTIVE</p><h1>{team || 'Your team'}<span className="year-label"> / {year}</span></h1><p className="muted">{selected?.mascot} {selected?.conference&&`· ${selected.conference}`}</p></div><div className="quick-controls"><label>Team<select aria-label="Team" value={team} disabled={teamLoading} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{!teams.length&&team&&<option>{team}</option>}{teams.map(t=><option key={t.id}>{t.school}</option>)}</select></label>{favoriteButton}<label>Season<select aria-label="Season" value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label></div></div>
+        <div className="workspace-heading"><div><p className="eyebrow">THE SEASON, IN PERSPECTIVE</p><h1>{team || 'Your team'}<span className="year-label"> / {year}</span></h1><p className="muted">{selected?.mascot} {selected?.conference&&`· ${selected.conference}`}</p></div><div className="quick-controls"><label>Team<select aria-label="Team" value={team} disabled={teamLoading} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{team&&!teams.some(t=>t.school===team)&&<option>{team}</option>}{teams.map(t=><option key={t.id}>{t.school}</option>)}</select></label>{favoriteButton}<label>Season<select aria-label="Season" value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label></div></div>
         {myTeams}
         <nav className="tabs" aria-label="Season pages"><Link className={view==='schedule'?'active':''} aria-current={view==='schedule'?'page':undefined} href={href('/schedule')}>Schedule & outlook</Link><Link className={view==='scoreboard'?'active':''} aria-current={view==='scoreboard'?'page':undefined} href={href('/scoreboard')}>Opponent scoreboard</Link></nav>
         {!team&&!teamLoading&&<div className="empty"><h3>Choose your team</h3><p>Select a team above to see its season outlook.</p></div>}
@@ -117,7 +117,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
           <section className="schedule-panel"><div className="section-heading"><div><p className="eyebrow">THE ROAD AHEAD</p><h2>Season schedule</h2></div><span className="muted">{data.games.length} games</span></div><div className="table-labels"><span>WEEK / DATE</span><span>MATCHUP</span><span>RESULT / WIN CHANCE</span></div>
             {data.games.length===0?<div className="empty"><h3>No games published yet</h3><p>Try another season, or check back when the schedule is released.</p></div>:data.games.map(g=>{
               const home=g.homeTeam===team,opponent=home?g.awayTeam:g.homeTeam,r=data.records[opponent],result=outcome(g,team),p=data.predictions[g.id];
-              return <article className="game-row" key={g.id}><div className="game-date"><span>{g.seasonType==='postseason'?'POST · ':''}WK {g.week}</span><strong>{date(g.startDate)}</strong></div><div className="matchup"><Badge name={opponent}/><div><h3><span className="venue-prefix">{g.neutralSite?'vs.':home?'vs.':'at'}</span> {opponent}</h3><p>{r?`${r.wins}–${r.losses}${r.ties?`–${r.ties}`:''}`:'Record unavailable'} <span>· {g.neutralSite?'Neutral site':home?'Home':'Away'}</span><span className="opponent-sp"> · SP+ {formatSpRank(data.spRatings[opponent]?.overallRank)}</span></p></div></div><div className="game-outlook">{result?<><strong className={`result ${result==='W'?'win':''}`}><span>{result}</span>{home?g.homePoints:g.awayPoints}–{home?g.awayPoints:g.homePoints}</strong><p>Final</p></>:['canceled','cancelled','postponed'].includes(g.status??'')?<p>{g.status}</p>:<><div className="probability"><strong>{p?.probability!=null?`${Math.round(p.probability*100)}%`:'—'}</strong><span>{p?.probability!=null?p.model==='99% assumption'?p.model:`${p.model} model`:'No rating'}</span></div><div className="probability-track"><span style={{width:`${(p?.probability??0)*100}%`}}/></div><p>{g.status==='in_progress'?'In progress · pregame estimate':g.startTimeTBD?'Kickoff TBA':new Date(g.startDate).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</p></>}</div></article>;
+              return <article className="game-row" key={g.id}><div className="game-date"><span>{g.seasonType==='postseason'?'POST · ':''}WK {g.week}</span><strong>{date(g.startDate)}</strong></div><div className="matchup"><Badge name={opponent}/><div><h3><span className="venue-prefix">{g.neutralSite?'vs.':home?'vs.':'at'}</span> <a className="opponent-link" href={`/schedule?${new URLSearchParams({team:opponent,year:String(year)})}`} aria-label={`View ${opponent} schedule for ${year}`}>{opponent}</a></h3><p>{r?`${r.wins}–${r.losses}${r.ties?`–${r.ties}`:''}`:'Record unavailable'} <span>· {g.neutralSite?'Neutral site':home?'Home':'Away'}</span><span className="opponent-sp"> · SP+ {formatSpRank(data.spRatings[opponent]?.overallRank)}</span></p></div></div><div className="game-outlook">{result?<><strong className={`result ${result==='W'?'win':''}`}><span>{result}</span>{home?g.homePoints:g.awayPoints}–{home?g.awayPoints:g.homePoints}</strong><p>Final</p></>:['canceled','cancelled','postponed'].includes(g.status??'')?<p>{g.status}</p>:<><div className="probability"><strong>{p?.probability!=null?`${Math.round(p.probability*100)}%`:'—'}</strong><span>{p?.probability!=null?p.model==='99% assumption'?p.model:`${p.model} model`:'No rating'}</span></div><div className="probability-track"><span style={{width:`${(p?.probability??0)*100}%`}}/></div><p>{g.status==='in_progress'?'In progress · pregame estimate':g.startTimeTBD?'Kickoff TBA':new Date(g.startDate).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}</p></>}</div></article>;
             })}
           </section>
           <details className="methodology"><summary>How the outlook is calculated</summary><p>Expected wins = completed wins + win probabilities for all remaining scheduled games, including announced postseason games. Unannounced playoff or bowl games are not projected. The total stays unavailable if any game lacks ratings.</p><p>SP+ differences are adjusted by 2.5 points for home field, then converted using 1 / (1 + exp(−margin / 9)). For a confirmed lower-division opponent without SP+, a rated or power-conference FBS team is assigned a 99% win chance (1% for the opponent), labeled “99% assumption.” Otherwise, if either team lacks SP+, Elo is used: 1 / (1 + 10^(−adjusted difference / 400)), with a 55-point home adjustment. Neutral sites have no home advantage.</p><p>These are transparent, uncalibrated model estimates, not official SP+ probabilities. Ratings are the latest available for the selected season; past seasons are not historical prediction backtests. In-progress games retain their pregame estimate until marked final.</p></details>

@@ -39,3 +39,5 @@
 .sp-metrics dt{font-size:.875rem;color:var(--muted)}.sp-metrics dd{margin:5px 0 0;font:700 2.5rem var(--display);color:var(--green)}
 .matchup .opponent-sp{white-space:nowrap}
 @media(max-width:600px){.brand{font-size:.875rem;letter-spacing:0}.sp-panel{padding:20px 18px}.sp-metrics{gap:10px}.sp-metrics>div+div{padding-left:10px}.sp-metrics dt{font-size:.8125rem}.sp-metrics dd{font-size:2rem}.matchup p .opponent-sp{display:inline}}
+
+.opponent-link{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}.opponent-link:hover{color:var(--green);text-decoration-color:currentColor}.opponent-link:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:2px}

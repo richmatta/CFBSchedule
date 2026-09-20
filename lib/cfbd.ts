@@ -23,6 +23,14 @@ export async function getTeams(year: number): Promise<Team[]> {
   const teams = await request('/teams/fbs',{year},z.array(teamSchema),86400);
   return teams.map(t=>({id:String(t.id),school:t.school,mascot:t.mascot??'',abbreviation:t.abbreviation??t.school.slice(0,3).toUpperCase(),conference:t.conference??'FBS',color:t.color??'#8c1515'})).sort((a,b)=>a.school.localeCompare(b.school));
 }
+// Keep the setup directory FBS-only, but allow visiting lower-division opponents.
+export async function getTeam(school: string, year: number): Promise<Team | undefined> {
+  const fbs = (await getTeams(year)).find(team => team.school === school);
+  if (fbs) return fbs;
+  if (isDemo()) return school === 'Montana State' ? {id:'demo-montana-state',school,mascot:'Bobcats',abbreviation:'MSU',conference:'Big Sky',color:'#003875'} : undefined;
+  const team = (await request('/teams',{},z.array(teamSchema),86400)).find(team => team.school === school);
+  return team ? {id:String(team.id),school:team.school,mascot:team.mascot??'',abbreviation:team.abbreviation??team.school.slice(0,3).toUpperCase(),conference:team.conference??'',color:team.color??'#8c1515'} : undefined;
+}
 export async function getOutlook(team: Team, year: number, requestedWeek?: string): Promise<Outlook> {
   const warnings: string[] = [];
   if (isDemo()) {
