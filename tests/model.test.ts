@@ -10,6 +10,23 @@ test('equal neutral ratings produce 50%; home and away are complementary',()=>{
   const away=predict({...game,neutralSite:false},'B',ratings).probability!;
   assert.ok(home>.5);assert.ok(Math.abs(home+away-1)<1e-10);
 });
+test('Stanford–Elon assumption contributes 0.99 to expected wins and is symmetric',()=>{
+  const matchup={...game,homeTeam:'Stanford',awayTeam:'Elon',homeClassification:'fbs',awayClassification:'fcs',homeConference:'ACC'};
+  const ratings={sp:{Stanford:5},elo:{Stanford:1500,Elon:1400}};
+  assert.deepEqual(predict(matchup,'Stanford',ratings),{probability:.99,model:'99% assumption'});
+  assert.equal(predict(matchup,'Elon',ratings).probability,.01);
+  assert.equal(predict({...matchup,homeTeam:'Elon',awayTeam:'Stanford',homeClassification:'fcs',awayClassification:'fbs',homeConference:null,awayConference:'ACC'},'Stanford',ratings).probability,.99);
+  assert.equal(summarize([matchup],'Stanford',{1:predict(matchup,'Stanford',ratings)}).expectedWins,.99);
+  assert.equal(predict(matchup,'Stanford',{sp:{},elo:{}}).probability,.99);
+});
+test('lower-division assumption requires evidence; normal rating models stay intact',()=>{
+  const ratings={sp:{A:10},elo:{}};
+  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',ratings).probability,.99);
+  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fbs'},'A',ratings).probability,null);
+  assert.equal(predict(game,'A',ratings).probability,null);
+  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',{sp:{},elo:{}}).probability,null);
+  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',{sp:{A:10,B:5},elo:{}}).model,'SP+');
+});
 test('SP+ takes precedence; Elo fallback uses both ratings from the same model',()=>{
   assert.equal(predict(game,'A',{sp:{A:20,B:10},elo:{A:1400,B:1800}}).model,'SP+');
   assert.equal(predict(game,'A',{sp:{A:20},elo:{A:1500,B:1500}}).probability,.5);

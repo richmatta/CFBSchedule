@@ -3,7 +3,7 @@ import { demoTeams, demoSeason } from './demo';
 import { currentWeek, predict, relevantGames, summarize, weekKey } from './model';
 import type { Game, Outlook, Team, Week } from './types';
 const nullableNumber = z.number().nullable();
-const gameSchema = z.object({id:z.number(),week:z.number(),seasonType:z.string(),startDate:z.string(),startTimeTBD:z.boolean(),completed:z.boolean(),neutralSite:z.boolean(),homeTeam:z.string(),awayTeam:z.string(),homePoints:nullableNumber,awayPoints:nullableNumber,venue:z.string().nullable().optional()});
+const gameSchema = z.object({id:z.number(),week:z.number(),seasonType:z.string(),startDate:z.string(),startTimeTBD:z.boolean(),completed:z.boolean(),neutralSite:z.boolean(),homeTeam:z.string(),awayTeam:z.string(),homeClassification:z.string().nullable().optional(),awayClassification:z.string().nullable().optional(),homeConference:z.string().nullable().optional(),awayConference:z.string().nullable().optional(),homePoints:nullableNumber,awayPoints:nullableNumber,venue:z.string().nullable().optional()});
 const teamSchema = z.object({id:z.number(),school:z.string(),mascot:z.string().nullable().optional(),abbreviation:z.string().nullable().optional(),conference:z.string().nullable().optional(),color:z.string().nullable().optional()});
 const weekSchema = z.object({week:z.number(),seasonType:z.string(),startDate:z.string(),endDate:z.string()});
 const recordsSchema = z.object({team:z.string(),total:z.object({wins:z.number(),losses:z.number(),ties:z.number()})});

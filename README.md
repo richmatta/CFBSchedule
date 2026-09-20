@@ -61,12 +61,13 @@ The browser refreshes every 60 seconds while visible. “Retrieved” is the app
 For each uncompleted game:
 
 - Prefer SP+ only when both teams have finite ratings. `margin = team SP+ − opponent SP+ + home adjustment`, where the adjustment is +2.5 at home, −2.5 away, and 0 at neutral sites. `P(win) = 1 / (1 + exp(−margin / 9))`.
+- For a confirmed FBS-versus-lower-division game, if the lower-division team lacks SP+, assign 99% to the FBS team when it has SP+/Elo or belongs to a power conference (ACC, Big Ten, Big 12, SEC, or Pac-12). The reverse perspective is 1%. This user-requested assumption precedes Elo fallback, is labeled `99% assumption`, and contributes 0.99 expected wins. Unknown classifications and ordinary FBS rating gaps do not trigger it.
 - Otherwise use both teams' Elo ratings. `difference = team Elo − opponent Elo + home adjustment`, with +55 at home, −55 away, and 0 neutral. `P(win) = 1 / (1 + 10^(−difference / 400))`.
 - Never mix Elo and SP+ scales. Missing values stay unavailable rather than becoming 50% or 100%. Each prediction labels its model.
 
 These home adjustments and probability conversions are transparent, **uncalibrated heuristics**, not official SP+ win probabilities. Calibrate against held-out historical pregame snapshots before claiming forecast accuracy.
 
-Expected total wins = completed wins + the sum of remaining probabilities. Completed losses/ties contribute zero. In-progress scores never count as final. Canceled games are excluded when identified by the live feed. Announced postseason games are included; unannounced bowls/playoff games are not invented. A missing rating (often an FCS opponent) leaves the full expected total unavailable and reports the count of missing predictions. On September 19, the expanded SRS endpoint returned no 2026 ratings, so it was not used as an invented FCS fallback.
+Expected total wins = completed wins + the sum of remaining probabilities. Completed losses/ties contribute zero. In-progress scores never count as final. Canceled games are excluded when identified by the live feed. Announced postseason games are included; unannounced bowls/playoff games are not invented. A missing rating outside the explicit lower-division assumption leaves the full expected total unavailable and reports the count of missing predictions. On September 19, the expanded SRS endpoint returned no 2026 ratings, so it was not used as an invented FCS fallback.
 
 Ratings always come from the selected season, never silently from last year. Next-season schedules and ratings may be incomplete or unpublished. Historical seasons show results with the latest ratings available for that season, not a point-in-time backtest. Calendar weeks default to the active week, the next week before/in gaps in the season, or the final week after the season; regular/postseason keys remain distinct and week zero is supported.
 

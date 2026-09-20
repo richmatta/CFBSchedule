@@ -9,6 +9,19 @@ export function predict(game: Game, team: string, ratings: Ratings): Prediction 
     const margin = ratings.sp[team] - ratings.sp[opponent] + 2.5 * location;
     return { probability: 1 / (1 + Math.exp(-margin / 9)), model: 'SP+' };
   }
+  // Explicit user assumption, restricted to confirmed cross-division games.
+  const lowerDivisions = new Set(['fcs', 'ii', 'ii/iii', 'iii']);
+  const powerConferences = new Set(['ACC', 'Big Ten', 'Big 12', 'SEC', 'Pac-12']);
+  const qualifies = (name: string, classification?: string | null, conference?: string | null) =>
+    classification === 'fbs' && (Number.isFinite(ratings.sp[name]) || Number.isFinite(ratings.elo[name]) || powerConferences.has(conference ?? ''));
+  const unratedLower = (name: string, classification?: string | null) =>
+    lowerDivisions.has(classification ?? '') && !Number.isFinite(ratings.sp[name]);
+  if (qualifies(game.homeTeam, game.homeClassification, game.homeConference) && unratedLower(game.awayTeam, game.awayClassification)) {
+    return { probability: home ? 0.99 : 0.01, model: '99% assumption' };
+  }
+  if (qualifies(game.awayTeam, game.awayClassification, game.awayConference) && unratedLower(game.homeTeam, game.homeClassification)) {
+    return { probability: home ? 0.01 : 0.99, model: '99% assumption' };
+  }
   if (Number.isFinite(ratings.elo[team]) && Number.isFinite(ratings.elo[opponent])) {
     return { probability: 1 / (1 + 10 ** (-(ratings.elo[team] - ratings.elo[opponent] + 55 * location) / 400)), model: 'Elo' };
   }
