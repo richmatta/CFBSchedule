@@ -69,7 +69,7 @@ These home adjustments and probability conversions are transparent, **uncalibrat
 
 Expected total wins = completed wins + the sum of remaining probabilities. Completed losses/ties contribute zero. In-progress scores never count as final. Canceled games are excluded when identified by the live feed. Announced postseason games are included; unannounced bowls/playoff games are not invented. A missing rating outside the explicit lower-division assumption leaves the full expected total unavailable and reports the count of missing predictions. On September 19, the expanded SRS endpoint returned no 2026 ratings, so it was not used as an invented FCS fallback.
 
-Ratings always come from the selected season, never silently from last year. Next-season schedules and ratings may be incomplete or unpublished. Historical seasons show results with the latest ratings available for that season, not a point-in-time backtest. Calendar weeks default to the active week, the next week before/in gaps in the season, or the final week after the season; regular/postseason keys remain distinct and week zero is supported.
+Ratings always come from the selected season, never silently from last year. Season selection is limited to the previous and current calendar year. Saved or linked future seasons reset to the current year. Historical seasons show results with the latest ratings available for that season, not a point-in-time backtest. Calendar weeks default to the active week, the next week before/in gaps in the season, or the final week after the season; regular/postseason keys remain distinct and week zero is supported.
 
 ## Demo and UI
 

@@ -37,7 +37,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
       if (Array.isArray(storedFavorites)) setFavorites([...new Set(storedFavorites.filter((name): name is string => typeof name === 'string' && name.length > 0))]);
     } catch {}
     const y = Number(url.get('year')??saved.year??initialYear);
-    setYear([initialYear-1,initialYear,initialYear+1].includes(y)?y:initialYear);
+    setYear([initialYear-1,initialYear].includes(y)?y:initialYear);
     setTeam(url.get('team')??saved.team??'');setReady(true);
   },[]);
   useEffect(()=>{
@@ -96,7 +96,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
       {view==='setup'?<>
         <div className="setup-heading"><p className="eyebrow">YOUR TEAM. THE ROAD AHEAD.</p><h1>Every Saturday<br/>starts here.</h1><p className="intro">Use advanced metrics (SP+) to forecast your team's performance against its schedule.</p></div>
         <section className="setup-card" aria-labelledby="setup-title"><div className="section-heading"><div><p className="eyebrow">01 / MAKE IT YOURS</p><h2 id="setup-title">Pick your team</h2></div><span className="pill">FBS</span></div>
-          <label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear,initialYear+1].map(y=><option key={y}>{y}</option>)}</select></label>
+          <label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label>
           <label className="field">Find a school<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search teams or conferences"/></label>
           {teamLoading?<p role="status">Loading FBS teams…</p>:<><label className="field">Team<select value={team} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{selected&&!displayedTeams.some(t=>t.school===team)&&<option value={team}>{team}</option>}{displayedTeams.map(t=><option key={t.id} value={t.school}>{t.school} {t.mascot}</option>)}</select></label><p className="muted">{query?`${displayedTeams.length} matching teams`:`${teams.length} teams in the ${year} directory`}</p></>}
           {selected&&<div className="selected-team"><Badge name={selected.abbreviation} large/><div><h3>{selected.school} {selected.mascot}</h3><p>{selected.conference}</p></div>{favoriteButton}</div>}
@@ -105,7 +105,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
           {demo&&<p className="demo-note">Demo mode · Explore with illustrative football data.</p>}
         </section>
       </>:<>
-        <div className="workspace-heading"><div><p className="eyebrow">THE SEASON, IN PERSPECTIVE</p><h1>{team || 'Your team'}<span className="year-label"> / {year}</span></h1><p className="muted">{selected?.mascot} {selected?.conference&&`· ${selected.conference}`}</p></div><div className="quick-controls"><label>Team<select aria-label="Team" value={team} disabled={teamLoading} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{!teams.length&&team&&<option>{team}</option>}{teams.map(t=><option key={t.id}>{t.school}</option>)}</select></label>{favoriteButton}<label>Season<select aria-label="Season" value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear,initialYear+1].map(y=><option key={y}>{y}</option>)}</select></label></div></div>
+        <div className="workspace-heading"><div><p className="eyebrow">THE SEASON, IN PERSPECTIVE</p><h1>{team || 'Your team'}<span className="year-label"> / {year}</span></h1><p className="muted">{selected?.mascot} {selected?.conference&&`· ${selected.conference}`}</p></div><div className="quick-controls"><label>Team<select aria-label="Team" value={team} disabled={teamLoading} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{!teams.length&&team&&<option>{team}</option>}{teams.map(t=><option key={t.id}>{t.school}</option>)}</select></label>{favoriteButton}<label>Season<select aria-label="Season" value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label></div></div>
         {myTeams}
         <nav className="tabs" aria-label="Season pages"><Link className={view==='schedule'?'active':''} aria-current={view==='schedule'?'page':undefined} href={href('/schedule')}>Schedule & outlook</Link><Link className={view==='scoreboard'?'active':''} aria-current={view==='scoreboard'?'page':undefined} href={href('/scoreboard')}>Opponent scoreboard</Link></nav>
         {!team&&!teamLoading&&<div className="empty"><h3>Choose your team</h3><p>Select a team above to see its season outlook.</p></div>}
