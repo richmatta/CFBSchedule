@@ -3,5 +3,5 @@ export type Game = { id: number; week: number; seasonType: string; startDate: st
 export type Week = { week: number; seasonType: string; startDate: string; endDate: string };
 export type RecordLine = { wins: number; losses: number; ties: number };
 export type Prediction = { probability: number | null; model: 'SP+' | 'Elo' | '99% assumption' | 'Unavailable' };
-export type SpRating = { overall: number | null; offense: number | null; defense: number | null };
+export type SpRating = { overallRank: number | null; offenseRank: number | null; defenseRank: number | null };
 export type Outlook = { team: Team; year: number; demo: boolean; spRatings: Record<string, SpRating>; games: Game[]; predictions: Record<number, Prediction>; records: Record<string, RecordLine>; weeks: Week[]; selectedWeek: string; currentWeek: string; scoreboard: Game[]; idleTeams: string[]; wins: number; losses: number; expectedWins: number | null; knownExpectedWins: number; missingPredictions: number; fetchedAt: string; warnings: string[] };

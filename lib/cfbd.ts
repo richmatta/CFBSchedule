@@ -7,7 +7,8 @@ const gameSchema = z.object({id:z.number(),week:z.number(),seasonType:z.string()
 const teamSchema = z.object({id:z.number(),school:z.string(),mascot:z.string().nullable().optional(),abbreviation:z.string().nullable().optional(),conference:z.string().nullable().optional(),color:z.string().nullable().optional()});
 const weekSchema = z.object({week:z.number(),seasonType:z.string(),startDate:z.string(),endDate:z.string()});
 const recordsSchema = z.object({team:z.string(),total:z.object({wins:z.number(),losses:z.number(),ties:z.number()})});
-const spSchema = z.object({team:z.string(),rating:nullableNumber,offense:z.object({rating:nullableNumber}).nullish(),defense:z.object({rating:nullableNumber}).nullish()});
+const spRank = z.number().int().positive().nullish();
+const spSchema = z.object({team:z.string(),rating:nullableNumber,ranking:spRank,offense:z.object({ranking:spRank}).nullish(),defense:z.object({ranking:spRank}).nullish()});
 const eloSchema = z.object({team:z.string(),elo:nullableNumber});
 const liveSchema = z.object({id:z.number(),status:z.string(),period:nullableNumber.optional(),clock:z.string().nullable().optional(),homeTeam:z.object({points:nullableNumber}),awayTeam:z.object({points:nullableNumber})});
 export const isDemo = () => process.env.DEMO_MODE === 'true' || !process.env.CFBD_API_KEY;
@@ -65,5 +66,5 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const ratings = {sp:Object.fromEntries(sp.filter(r=>r.rating!==null).map(r=>[r.team,r.rating as number])),elo:Object.fromEntries(elo.filter(r=>r.elo!==null).map(r=>[r.team,r.elo as number]))};
   const predictions = Object.fromEntries(games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,ratings)]));
   const board = relevantGames(games,weekGames,team.school);
-  return {team,year,demo:false,spRatings:Object.fromEntries(sp.map(r=>[r.team,{overall:r.rating,offense:r.offense?.rating??null,defense:r.defense?.rating??null}])),games,predictions,records:Object.fromEntries(records.map(r=>[r.team,r.total])),weeks:calendar,selectedWeek,currentWeek:current?weekKey(current):'regular:1',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings};
+  return {team,year,demo:false,spRatings:Object.fromEntries(sp.map(r=>[r.team,{overallRank:r.ranking??null,offenseRank:r.offense?.ranking??null,defenseRank:r.defense?.ranking??null}])),games,predictions,records:Object.fromEntries(records.map(r=>[r.team,r.total])),weeks:calendar,selectedWeek,currentWeek:current?weekKey(current):'regular:1',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings};
 }

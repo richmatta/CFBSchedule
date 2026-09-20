@@ -89,4 +89,4 @@ Tests cover neutral/home/away probabilities, Elo fallback, completion transition
 
 Core files: `lib/cfbd.ts` provider adapter, `lib/model.ts` calculations, `components/outlook-app.tsx` interactive screens, `app/globals.css` responsive theme, `app/api/*` validated server routes.
 
-The default brand color is Stanford Cardinal red (#8C1515). First-time visitors explicitly choose a team; returning visitors retain their saved selection. The schedule displays overall, offensive, and defensive SP+ with compact opponent overall ratings. Missing ratings are shown as unavailable, never inferred from the 99% game assumption.
+The default brand color is Stanford Cardinal red (#8C1515). First-time visitors explicitly choose a team; returning visitors retain their saved selection. The schedule displays provider-supplied national overall, offensive, and defensive SP+ rankings, with compact opponent overall rankings. #1 is best; probabilities still use underlying rating values, not ranks. Missing ratings are shown as unavailable, never inferred from the 99% game assumption.
