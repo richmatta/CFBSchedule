@@ -92,12 +92,12 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   const nextPrediction=nextGame&&data?.predictions[nextGame.id];
   return <div className="team-theme" style={teamTheme(selected?.school==='Stanford'?'#8c1515':selected?.color)}>
     <header className="topbar"><div className="topbar-inner"><Link className="brand" href="/" aria-label="CFB Schedule Outlook home"><span className="brand-mark">C</span><span>CFB SCHEDULE<span className="brand-light"> OUTLOOK</span></span></Link><span className="edition">COLLEGE FOOTBALL</span></div></header>
-    <main>
+    <main className={view==='setup'?'setup-main':undefined}>
       {view==='setup'?<>
-        <div className="setup-heading"><p className="eyebrow">YOUR TEAM. THE ROAD AHEAD.</p><h1>Every Saturday<br/>starts here.</h1><p className="intro">Use advanced metrics (SP+) to forecast your team's performance against its schedule.</p></div>
-        <section className="setup-card" aria-labelledby="setup-title"><div className="section-heading"><div><p className="eyebrow">01 / MAKE IT YOURS</p><h2 id="setup-title">Pick your team</h2></div><span className="pill">FBS</span></div>
-          <label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label>
-          <label className="field">Find a school<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search teams or conferences"/></label>
+        <div className="setup-heading"><p className="intro">Use advanced metrics (SP+) to forecast your team's performance against its schedule.</p></div>
+        <section className="setup-card" aria-labelledby="setup-title"><div className="section-heading"><div><p className="eyebrow">01 / MAKE IT YOURS</p><h1 id="setup-title">Pick your team</h1></div><span className="pill">FBS</span></div>
+          <div className="setup-fields"><label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear].map(y=><option key={y}>{y}</option>)}</select></label>
+          <label className="field">Find a school<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search teams or conferences"/></label></div>
           {teamLoading?<p role="status">Loading FBS teams…</p>:<><label className="field">Team<select value={team} onChange={e=>changeTeam(e.target.value)}><option value="" disabled>Choose a team</option>{selected&&!displayedTeams.some(t=>t.school===team)&&<option value={team}>{team}</option>}{displayedTeams.map(t=><option key={t.id} value={t.school}>{t.school} {t.mascot}</option>)}</select></label><p className="muted">{query?`${displayedTeams.length} matching teams`:`${teams.length} teams in the ${year} directory`}</p></>}
           {selected&&<div className="selected-team"><Badge name={selected.abbreviation} large/><div><h3>{selected.school} {selected.mascot}</h3><p>{selected.conference}</p></div>{favoriteButton}</div>}
           {myTeams}
