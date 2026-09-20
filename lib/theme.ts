@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 
 export function teamTheme(color?: string): CSSProperties {
   const raw = color?.trim().replace(/^#/, '') ?? '';
-  const hex = /^[\da-f]{6}$/i.test(raw) ? raw : /^[\da-f]{3}$/i.test(raw) ? raw.split('').map(c => c + c).join('') : '124b3b';
+  const hex = /^[\da-f]{6}$/i.test(raw) ? raw : /^[\da-f]{3}$/i.test(raw) ? raw.split('').map(c => c + c).join('') : '8c1515';
   const rgb = [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16));
   const luminance = (channels: number[]) => channels.map(v => {
     const s = v / 255;

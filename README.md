@@ -1,4 +1,4 @@
-# Saturday Outlook
+# CFB Schedule Outlook
 
 A mobile-first college football schedule outlook built with Next.js App Router, TypeScript, React, and server-side CollegeFootballData (CFBD) integration. Source repository: https://github.com/richmatta/CFBSchedule.
 
@@ -88,3 +88,5 @@ pnpm build
 Tests cover neutral/home/away probabilities, Elo fallback, completion transitions, missing ratings, cancellations, calendar boundaries, postseason, week zero, FCS scoreboard inclusion, and deduplication. GitHub Actions runs the model tests and production build. Real provider calls were checked separately using the local key; CI works without credentials. Mobile and desktop layouts have been inspected in a browser.
 
 Core files: `lib/cfbd.ts` provider adapter, `lib/model.ts` calculations, `components/outlook-app.tsx` interactive screens, `app/globals.css` responsive theme, `app/api/*` validated server routes.
+
+The default brand color is Stanford Cardinal red (#8C1515). First-time visitors explicitly choose a team; returning visitors retain their saved selection. The schedule displays overall, offensive, and defensive SP+ with compact opponent overall ratings. Missing ratings are shown as unavailable, never inferred from the 99% game assumption.

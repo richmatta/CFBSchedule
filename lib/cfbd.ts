@@ -7,7 +7,7 @@ const gameSchema = z.object({id:z.number(),week:z.number(),seasonType:z.string()
 const teamSchema = z.object({id:z.number(),school:z.string(),mascot:z.string().nullable().optional(),abbreviation:z.string().nullable().optional(),conference:z.string().nullable().optional(),color:z.string().nullable().optional()});
 const weekSchema = z.object({week:z.number(),seasonType:z.string(),startDate:z.string(),endDate:z.string()});
 const recordsSchema = z.object({team:z.string(),total:z.object({wins:z.number(),losses:z.number(),ties:z.number()})});
-const spSchema = z.object({team:z.string(),rating:nullableNumber});
+const spSchema = z.object({team:z.string(),rating:nullableNumber,offense:z.object({rating:nullableNumber}).nullish(),defense:z.object({rating:nullableNumber}).nullish()});
 const eloSchema = z.object({team:z.string(),elo:nullableNumber});
 const liveSchema = z.object({id:z.number(),status:z.string(),period:nullableNumber.optional(),clock:z.string().nullable().optional(),homeTeam:z.object({points:nullableNumber}),awayTeam:z.object({points:nullableNumber})});
 export const isDemo = () => process.env.DEMO_MODE === 'true' || !process.env.CFBD_API_KEY;
@@ -20,7 +20,7 @@ async function request<T>(path: string, params: Record<string,string|number>, sc
 export async function getTeams(year: number): Promise<Team[]> {
   if (isDemo()) return demoTeams;
   const teams = await request('/teams/fbs',{year},z.array(teamSchema),86400);
-  return teams.map(t=>({id:String(t.id),school:t.school,mascot:t.mascot??'',abbreviation:t.abbreviation??t.school.slice(0,3).toUpperCase(),conference:t.conference??'FBS',color:t.color??'#145b44'})).sort((a,b)=>a.school.localeCompare(b.school));
+  return teams.map(t=>({id:String(t.id),school:t.school,mascot:t.mascot??'',abbreviation:t.abbreviation??t.school.slice(0,3).toUpperCase(),conference:t.conference??'FBS',color:t.color??'#8c1515'})).sort((a,b)=>a.school.localeCompare(b.school));
 }
 export async function getOutlook(team: Team, year: number, requestedWeek?: string): Promise<Outlook> {
   const warnings: string[] = [];
@@ -32,7 +32,7 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
     const ownGame = data.games.find(g=>g.week===week);
     const board = relevantGames(data.games, [...sampleGames.filter(g=>!ownGame || (g.homeTeam!==ownGame.homeTeam && g.homeTeam!==ownGame.awayTeam)),...(ownGame?[ownGame]:[])],team.school);
     const predictions = Object.fromEntries(data.games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,data.ratings)]));
-    return {team,year,demo:true,games:data.games,predictions,records:data.records,weeks:data.weeks,selectedWeek,currentWeek:'regular:4',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(data.games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings:['Illustrative schedules, scores, records, and ratings. These are not real game results. Demo team directory uses the 2025 FBS membership.']};
+    return {team,year,demo:true,spRatings:{},games:data.games,predictions,records:data.records,weeks:data.weeks,selectedWeek,currentWeek:'regular:4',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(data.games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings:['Illustrative schedules, scores, records, and ratings. These are not real game results. Demo team directory uses the 2025 FBS membership.']};
   }
   const optional = async <T>(promise: Promise<T>, fallback: T, message: string): Promise<T> => {try {return await promise;} catch {warnings.push(message);return fallback;}};
   const enableSp = process.env.CFBD_SP_ENABLED === 'true' && process.env.RATING_MODEL !== 'elo';
@@ -65,5 +65,5 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const ratings = {sp:Object.fromEntries(sp.filter(r=>r.rating!==null).map(r=>[r.team,r.rating as number])),elo:Object.fromEntries(elo.filter(r=>r.elo!==null).map(r=>[r.team,r.elo as number]))};
   const predictions = Object.fromEntries(games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,ratings)]));
   const board = relevantGames(games,weekGames,team.school);
-  return {team,year,demo:false,games,predictions,records:Object.fromEntries(records.map(r=>[r.team,r.total])),weeks:calendar,selectedWeek,currentWeek:current?weekKey(current):'regular:1',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings};
+  return {team,year,demo:false,spRatings:Object.fromEntries(sp.map(r=>[r.team,{overall:r.rating,offense:r.offense?.rating??null,defense:r.defense?.rating??null}])),games,predictions,records:Object.fromEntries(records.map(r=>[r.team,r.total])),weeks:calendar,selectedWeek,currentWeek:current?weekKey(current):'regular:1',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings};
 }
