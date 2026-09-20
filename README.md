@@ -75,7 +75,7 @@ Ratings always come from the selected season, never silently from last year. Nex
 
 The demo's schedules, scores, records, and Elo inputs are generated fixtures, not real results. The offline picker is a 136-team 2025 membership snapshot from ESPN's public conference standings directory, retrieved September 19, 2026. The real-data picker uses CFBD membership for the chosen year (138 teams returned for 2026). No ESPN API is used in production data requests.
 
-Routes: `/` setup, `/schedule`, `/scoreboard`. Team and year travel in links and persist locally. Scoreboard includes all opponents found on the selected team's schedule and the selected team, deduplicates shared games, and lists teams without a game that week.
+Routes: `/` setup, `/schedule`, `/scoreboard`. Team and year travel in links and persist locally. Star a selected team to add it to My Teams; saved teams appear as quick-switch buttons on setup, Schedule, and Scoreboard. Remove a favorite with its × button or the selected team’s star. Favorites persist in browser local storage (no cookies or account), and teams unavailable in a chosen season remain saved but disabled. Scoreboard includes all opponents found on the selected team's schedule and the selected team, deduplicates shared games, and lists teams without a game that week.
 
 ## Validation
 

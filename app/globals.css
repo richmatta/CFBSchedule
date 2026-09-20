@@ -12,3 +12,22 @@
 .team-theme .primary-button:hover{filter:brightness(.92)}
 .team-theme :is(a,button,select,input,summary):focus-visible{outline-color:var(--green)}
 .team-theme .win-track .lost{background:var(--team-on-primary);opacity:.18!important}
+
+/* Device-local favorite teams and quick switching. */
+.favorite-toggle{flex-shrink:0;align-self:flex-end;min-width:46px;min-height:46px;border:1px solid var(--line);border-radius:6px;background:white;color:var(--green);font-size:1.5rem;line-height:1}
+.favorite-toggle[aria-pressed="true"]{background:var(--team-tint);border-color:var(--green)}
+.selected-team .favorite-toggle{margin-left:auto;align-self:center}
+.my-teams{margin:0 0 25px;padding:16px 0;border-top:1px solid var(--line)}
+.my-teams-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.my-teams-heading h2{font:700 .875rem var(--body)}
+.my-teams-heading>span{font-size:.75rem;color:var(--muted)}
+.favorite-list{display:flex;flex-wrap:wrap;gap:8px}
+.favorite-chip{display:flex;max-width:100%;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:white}
+.favorite-chip button{border:0;background:transparent;color:var(--green);min-height:44px;font-size:.875rem}
+.favorite-switch{padding:8px 12px;text-align:left;overflow-wrap:anywhere}
+.favorite-switch[aria-pressed="true"]{background:var(--team-primary);color:var(--team-on-primary)}
+.favorite-switch:disabled{opacity:.65;cursor:default}
+.favorite-remove{min-width:44px;border-left:1px solid var(--line)!important;font-size:1.25rem!important}
+.favorite-chip button:hover{background:var(--team-tint);color:var(--green)}
+.favorite-chip button:focus-visible{outline-offset:-3px}
+@media(max-width:600px){.quick-controls{gap:8px}.quick-controls label:first-child{min-width:0}.quick-controls label:last-child{max-width:100px}.selected-team{flex-wrap:wrap}.favorite-toggle{min-width:44px}}

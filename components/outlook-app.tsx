@@ -24,10 +24,17 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   const [demo,setDemo] = useState(false),[data,setData] = useState<Outlook|null>(null);
   const [error,setError] = useState(''),[loading,setLoading] = useState(false),[week,setWeek] = useState('');
   const [retry,setRetry] = useState(0);
+  const [favorites,setFavorites] = useState<string[]>([]);
+  const [storageNotice,setStorageNotice] = useState('');
   useEffect(()=>{
     const url = new URLSearchParams(window.location.search);
     let saved: {team?:string;year?:number} = {};
-    try {saved = JSON.parse(localStorage.getItem('saturday-preferences')??'{}');} catch {}
+    try {
+      const value = JSON.parse(localStorage.getItem('saturday-preferences')??'{}');
+      if (value && typeof value === 'object') saved = {team:typeof value.team === 'string' ? value.team : undefined,year:typeof value.year === 'number' ? value.year : undefined};
+      const storedFavorites = JSON.parse(localStorage.getItem('saturday-my-teams')??'[]');
+      if (Array.isArray(storedFavorites)) setFavorites([...new Set(storedFavorites.filter((name): name is string => typeof name === 'string' && name.length > 0))]);
+    } catch {}
     const y = Number(url.get('year')??saved.year??initialYear);
     setYear([initialYear-1,initialYear,initialYear+1].includes(y)?y:initialYear);
     setTeam(url.get('team')??saved.team??'Oregon');setReady(true);
@@ -41,6 +48,17 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
     return ()=>controller.abort();
   },[year,ready,retry]);
   useEffect(()=>{if(ready)try{localStorage.setItem('saturday-preferences',JSON.stringify({team,year}));}catch{}},[team,year,ready]);
+  useEffect(()=>{
+    if (!ready) return;
+    try {localStorage.setItem('saturday-my-teams',JSON.stringify(favorites));setStorageNotice('');}
+    catch {setStorageNotice('Your browser cannot save My Teams. Changes will last only for this visit.');}
+  },[favorites,ready]);
+  useEffect(()=>{
+    if (!ready || view==='setup') return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('team',team);url.searchParams.set('year',String(year));
+    window.history.replaceState(window.history.state,'',url);
+  },[team,year,ready,view]);
   const load = useCallback(async(signal:AbortSignal,background=false)=>{
     if(!ready||teamLoading||!teams.some(t=>t.school===team)||view==='setup')return;
     if(!background)setLoading(true);
@@ -60,6 +78,12 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   const selected=teams.find(t=>t.school===team);
   const changeYear=(value:number)=>{setData(null);setWeek('');setYear(value);};
   const changeTeam=(value:string)=>{setData(null);setWeek('');setTeam(value);};
+  const isFavorite = favorites.includes(team);
+  const favoriteButton = <button type="button" className="favorite-toggle" disabled={!selected||teamLoading} aria-pressed={isFavorite} aria-label={`${isFavorite?'Remove':'Add'} ${team} ${isFavorite?'from':'to'} My Teams`} title={`${isFavorite?'Remove from':'Add to'} My Teams`} onClick={()=>setFavorites(current=>current.includes(team)?current.filter(name=>name!==team):[...current,team])}><span aria-hidden="true">{isFavorite?'★':'☆'}</span></button>;
+  const myTeams = <section className="my-teams" aria-label="My Teams"><div className="my-teams-heading"><h2>My Teams</h2><span>Saved in this browser</span></div>{favorites.length?<div className="favorite-list">{favorites.map(name=>{
+    const available=teams.some(t=>t.school===name);
+    return <div className="favorite-chip" key={name}><button type="button" className="favorite-switch" aria-pressed={team===name} disabled={teamLoading||!available} title={!teamLoading&&!available?`${name} is not listed as FBS in ${year}`:undefined} onClick={()=>changeTeam(name)}>{name}{!teamLoading&&!available&&<span> · Unavailable in {year}</span>}</button><button type="button" className="favorite-remove" aria-label={`Remove ${name} from My Teams`} onClick={()=>setFavorites(current=>current.filter(t=>t!==name))}>×</button></div>;
+  })}</div>:<p className="muted">Use the star beside your team to save it here.</p>}{storageNotice&&<p className="muted" role="status">{storageNotice}</p>}</section>;
   const record=data?.records[team];
   const displayedTeams=teams.filter(t=>`${t.school} ${t.mascot} ${t.conference}`.toLowerCase().includes(query.toLowerCase()));
   const nextGame=data?.games.find(g=>!g.completed&&!['canceled','cancelled'].includes(g.status??''));
@@ -74,12 +98,14 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
           <label className="field">Season<select value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear,initialYear+1].map(y=><option key={y}>{y}</option>)}</select></label>
           <label className="field">Find a school<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search teams or conferences"/></label>
           {teamLoading?<p role="status">Loading FBS teams…</p>:<><label className="field">Team<select value={team} onChange={e=>changeTeam(e.target.value)}>{selected&&!displayedTeams.some(t=>t.school===team)&&<option value={team}>{team}</option>}{displayedTeams.map(t=><option key={t.id} value={t.school}>{t.school} {t.mascot}</option>)}</select></label><p className="muted">{query?`${displayedTeams.length} matching teams`:`${teams.length} teams in the ${year} directory`}</p></>}
-          {selected&&<div className="selected-team"><Badge name={selected.abbreviation} large/><div><h3>{selected.school} {selected.mascot}</h3><p>{selected.conference}</p></div></div>}
+          {selected&&<div className="selected-team"><Badge name={selected.abbreviation} large/><div><h3>{selected.school} {selected.mascot}</h3><p>{selected.conference}</p></div>{favoriteButton}</div>}
+          {myTeams}
           {selected&&!teamLoading&&<Link className="primary-button" href={href('/schedule')}>See my season <span aria-hidden="true">→</span></Link>}
           {demo&&<p className="demo-note">Demo mode · Explore with illustrative football data.</p>}
         </section>
       </>:<>
-        <div className="workspace-heading"><div><p className="eyebrow">THE SEASON, IN PERSPECTIVE</p><h1>{team || 'Your team'}<span className="year-label"> / {year}</span></h1><p className="muted">{selected?.mascot} {selected?.conference&&`· ${selected.conference}`}</p></div><div className="quick-controls"><label>Team<select aria-label="Team" value={team} disabled={teamLoading} onChange={e=>changeTeam(e.target.value)}>{!teams.length&&<option>{team}</option>}{teams.map(t=><option key={t.id}>{t.school}</option>)}</select></label><label>Season<select aria-label="Season" value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear,initialYear+1].map(y=><option key={y}>{y}</option>)}</select></label></div></div>
+        <div className="workspace-heading"><div><p className="eyebrow">THE SEASON, IN PERSPECTIVE</p><h1>{team || 'Your team'}<span className="year-label"> / {year}</span></h1><p className="muted">{selected?.mascot} {selected?.conference&&`· ${selected.conference}`}</p></div><div className="quick-controls"><label>Team<select aria-label="Team" value={team} disabled={teamLoading} onChange={e=>changeTeam(e.target.value)}>{!teams.length&&<option>{team}</option>}{teams.map(t=><option key={t.id}>{t.school}</option>)}</select></label>{favoriteButton}<label>Season<select aria-label="Season" value={year} onChange={e=>changeYear(Number(e.target.value))}>{[initialYear-1,initialYear,initialYear+1].map(y=><option key={y}>{y}</option>)}</select></label></div></div>
+        {myTeams}
         <nav className="tabs" aria-label="Season pages"><Link className={view==='schedule'?'active':''} aria-current={view==='schedule'?'page':undefined} href={href('/schedule')}>Schedule & outlook</Link><Link className={view==='scoreboard'?'active':''} aria-current={view==='scoreboard'?'page':undefined} href={href('/scoreboard')}>Opponent scoreboard</Link></nav>
         {data?.demo&&<div className="notice demo-notice"><strong>Demo season</strong> · All schedules, scores, and projections below are illustrative.</div>}
         {(loading||teamLoading)&&<div className="loading" role="status"><span className="loading-line"/>Loading your season…</div>}
