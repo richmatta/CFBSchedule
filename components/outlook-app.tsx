@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import type { Game, Outlook, Team } from '@/lib/types';
 import { outcome, weekKey } from '@/lib/model';
+import { teamTheme } from '@/lib/theme';
 
 const initialYear = new Date().getFullYear();
 const date = (value: string) => new Date(value).toLocaleDateString('en-US',{month:'short',day:'numeric'});
@@ -64,7 +65,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   const nextGame=data?.games.find(g=>!g.completed&&!['canceled','cancelled'].includes(g.status??''));
   const nextOpponent=nextGame&&(nextGame.homeTeam===team?nextGame.awayTeam:nextGame.homeTeam);
   const nextPrediction=nextGame&&data?.predictions[nextGame.id];
-  return <>
+  return <div className="team-theme" style={teamTheme(selected?.color)}>
     <header className="topbar"><div className="topbar-inner"><Link className="brand" href="/" aria-label="Saturday Outlook home"><span className="brand-mark">S</span><span>SATURDAY<span className="brand-light"> OUTLOOK</span></span></Link><span className="edition">COLLEGE FOOTBALL</span></div></header>
     <main>
       {view==='setup'?<>
@@ -99,5 +100,5 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
       {error&&<div className="notice error" role="alert"><strong>Couldn’t update football data.</strong><p>{error}</p>{data&&<p>The last retrieved data is still shown above.</p>}<button onClick={()=>setRetry(r=>r+1)}>Try again</button></div>}
       <footer className="site-footer"><span>SATURDAY OUTLOOK</span><span>One team. Every Saturday.</span><a href="https://collegefootballdata.com" target="_blank" rel="noreferrer">Data source ↗</a></footer>
     </main>
-  </>;
+  </div>;
 }
