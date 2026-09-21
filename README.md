@@ -48,11 +48,10 @@ Primary provider: [CollegeFootballData](https://api.collegefootballdata.com/). I
 | `/calendar?year=…` | Week boundaries, including postseason in January | 1 hour |
 | `/ratings/sp?year=…` | Latest available selected-season SP+ | 1 hour |
 | `/ratings/elo?year=…&seasonType=both` | Defensible alternate ratings | 1 hour |
-| `/scoreboard` | In-progress score overlays by game ID during active weeks | 1 minute |
 
-Docs: [games, records, calendar and scoreboard](https://api.collegefootballdata.com/api/games), [ratings](https://api.collegefootballdata.com/api/ratings), [teams](https://api.collegefootballdata.com/api/teams).
+Docs: [games, records and calendar](https://api.collegefootballdata.com/api/games), [ratings](https://api.collegefootballdata.com/api/ratings), [teams](https://api.collegefootballdata.com/api/teams).
 
-The supplied key was verified on September 19, 2026: schedules, FBS directory, calendar, SP+, and Elo returned successfully. The live `/scoreboard` endpoint returned HTTP 401. The app therefore shows a visible live-feed notice and the latest recorded `/games` results; it must not be described as a verified real-time scoreboard with this account. Live status integration is implemented but needs endpoint access for end-to-end validation. Refreshing the page does not bypass the provider cache.
+The supplied key was verified on September 19, 2026: schedules, FBS directory, calendar, SP+, and Elo returned successfully. Live `/scoreboard` access requires a higher API tier and is intentionally disabled. The Opponent Scoreboard uses `/games`, so current results appear when that feed records them rather than as a live overlay. Refreshing the page does not bypass the provider cache.
 
 The browser refreshes every 60 seconds while visible. “Retrieved” is the app retrieval time, not the provider's last scoring update. Scores may lag five minutes plus provider delay; ratings may lag one hour plus publication delay. API schema validation, timeouts, explicit errors, and optional-endpoint warnings prevent quiet failures.
 

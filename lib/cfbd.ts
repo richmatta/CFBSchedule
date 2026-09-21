@@ -11,7 +11,8 @@ const recordsSchema = z.object({team:z.string(),total:z.object({wins:z.number(),
 const spRank = z.number().int().positive().nullish();
 const spSchema = z.object({team:z.string(),rating:nullableNumber,ranking:spRank,offense:z.object({ranking:spRank}).nullish(),defense:z.object({ranking:spRank}).nullish()});
 const eloSchema = z.object({team:z.string(),elo:nullableNumber});
-const liveSchema = z.object({id:z.number(),status:z.string(),period:nullableNumber.optional(),clock:z.string().nullable().optional(),homeTeam:z.object({points:nullableNumber}),awayTeam:z.object({points:nullableNumber})});
+// Live-score access is intentionally disabled. The weekly scoreboard uses /games.
+// const liveSchema = z.object({id:z.number(),status:z.string(),period:nullableNumber.optional(),clock:z.string().nullable().optional(),homeTeam:z.object({points:nullableNumber}),awayTeam:z.object({points:nullableNumber})});
 export const isDemo = () => process.env.DEMO_MODE === 'true' || !process.env.CFBD_API_KEY;
 async function request<T>(path: string, params: Record<string,string|number>, schema: z.ZodType<T>, seconds = 300): Promise<T> {
   const query = new URLSearchParams(Object.entries(params).map(([k,v]) => [k,String(v)]));
@@ -70,16 +71,8 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   if (requestedWeek && calendar.length && !calendar.some(w=>weekKey(w)===requestedWeek)) throw new Error('Selected week is not available in this season.');
   const [seasonType,week] = selectedWeek.split(':');
   const weekGames: Game[] = calendar.length ? await request('/games',{year,week:Number(week),seasonType},z.array(gameSchema)) : [];
-  // Scoreboard supplies in-progress scores; historical/future weeks use /games.
-  const active = current && Date.now() >= Date.parse(current.startDate) && Date.now() <= Date.parse(current.endDate);
-  if (active) {
-    const live = await optional(request('/scoreboard',{},z.array(liveSchema),60),[],'Live score feed unavailable. Showing latest scheduled games and recorded results.');
-    const overlay = new Map(live.map(g=>[g.id,g]));
-    for (const game of [...games,...weekGames]) {
-      const update = overlay.get(game.id);
-      if (update) Object.assign(game,{homePoints:update.homeTeam.points,awayPoints:update.awayTeam.points,status:update.status,completed:game.completed || ['completed','final'].includes(update.status),period:update.period,clock:update.clock});
-    }
-  }
+  // Live-score overlay intentionally disabled because it requires a higher CFBD tier.
+  // Historical, current-week, and future scoreboard results come from /games.
   const ratings = {sp:Object.fromEntries(sp.filter(r=>r.rating!==null).map(r=>[r.team,r.rating as number])),elo:Object.fromEntries(elo.filter(r=>r.elo!==null).map(r=>[r.team,r.elo as number]))};
   const predictions = Object.fromEntries(games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,ratings)]));
   const board = relevantGames(games,weekGames,team.school);
