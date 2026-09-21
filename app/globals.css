@@ -74,3 +74,8 @@
 .team-search-results button:hover,.team-search-results button:focus-visible{background:var(--team-tint)}
 .team-search-results button:focus-visible{outline-offset:-3px}
 .team-search-results strong{display:block;font-size:.875rem}.team-search-results small{display:block;font-size:.75rem;color:var(--muted)}
+
+/* Keep iOS from zooming small form text on focus and retaining that zoom on navigation. */
+@media(max-width:1000px){
+  .team-theme input,.team-theme select,.team-theme textarea{font-size:16px}
+}
