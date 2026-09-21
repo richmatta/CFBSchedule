@@ -37,7 +37,7 @@ Do not upload `.env.local`, `.next`, or `node_modules`. Review CFBD quotas befor
 
 ## Data sources and access
 
-Primary provider: [CollegeFootballData](https://api.collegefootballdata.com/). Its authenticated, documented API supplies the app's real data. [Current access tiers](https://collegefootballdata.com/api-tiers) determine endpoint availability and usage limits; API access does not itself establish redistribution rights for third-party ratings. Confirm the intended published use with CFBD/SP+ rights holders as appropriate. The app does not scrape ESPN's SP+ articles or bypass paywalls.
+Primary provider: [CollegeFootballData](https://api.collegefootballdata.com/). Its authenticated, documented API supplies the app's real data. [Current access tiers](https://collegefootballdata.com/api-tiers) determine endpoint availability and usage limits; API access does not itself establish redistribution rights for third-party ratings. Confirm the intended published use with CFBD/SP+ rights holders as appropriate. Current-season SP+ uses the publicly readable ESPN article described below; no paywall bypass is implemented.
 
 | Endpoint | Use | Shared upstream cache |
 | --- | --- | --- |
@@ -90,3 +90,12 @@ Tests cover neutral/home/away probabilities, Elo fallback, completion transition
 Core files: `lib/cfbd.ts` provider adapter, `lib/model.ts` calculations, `components/outlook-app.tsx` interactive screens, `app/globals.css` responsive theme, `app/api/*` validated server routes.
 
 The default brand color is Stanford Cardinal red (#8C1515). First-time visitors explicitly choose a team; returning visitors retain their saved selection. The schedule displays provider-supplied national overall, offensive, and defensive SP+ rankings, with compact opponent overall rankings. #1 is best; probabilities still use underlying rating values, not ranks. Missing ratings are shown as unavailable, never inferred from the 99% game assumption.
+
+
+### ESPN SP+ publications
+
+For the current 2026 season, ESPN SP+ is enabled by default. Set `ESPN_SP_ENABLED=false` to use the existing CFBD/Elo path. `RATING_MODEL=elo` overrides both SP+ sources. `CFBD_SP_ENABLED` controls only CFBD access; the CFBD key remains necessary for schedules and records. No new Vercel secret is needed.
+
+The server reads the ESPN article hourly on demand, validates the season, explicit ratings publication date, every FBS team, unique ranks and numeric ratings, then caches the complete validated snapshot in Next's Data Cache. Validation failures never replace a successful cached snapshot. A checked-in September 20 snapshot also covers cold starts/cache loss; if that snapshot no longer matches the FBS directory, CFBD is the fallback. Historical seasons continue using CFBD. The UI shows the SP+ publication date separately from the outlook retrieval time and warns when that publication is over eight days old. A stale cached publication can remain available while background revalidation fails; its displayed date remains unchanged.
+
+The adapter uses ESPN as the preferred current-season source, not an inferred comparison against CFBD's unknown publication date. It imports the predictive SP+ table (not résumé SP+), maps ESPN abbreviations to CFBD names, and uses numerical ratings for probabilities while displaying ranks. The source link accompanies the publication date. The pinned article URL and supported year in `lib/espn-sp.ts` / `lib/espn-source.ts` must be reviewed for a new season. This is an HTML integration; source layout/access changes may require maintenance. Published ratings refresh when the app is requested, not via a scheduled job.
