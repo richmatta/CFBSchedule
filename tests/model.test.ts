@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { predict, outcome, summarize, currentWeek, relevantGames, weekKey } from '../lib/model';
+import { predict, outcome, summarize, currentWeek, gamesForWeek, relevantGames, scheduleForTeam, weekKey } from '../lib/model';
 import type { Game, Week } from '../lib/types';
 const game: Game = {id:1,week:0,seasonType:'regular',startDate:'2026-08-29T19:00:00Z',startTimeTBD:false,completed:false,neutralSite:true,homeTeam:'A',awayTeam:'B',homePoints:null,awayPoints:null};
 test('equal neutral ratings produce 50%; home and away are complementary',()=>{
@@ -58,4 +58,11 @@ test('opponent scoreboard includes FCS opponents, selected team, and deduplicate
   const board=relevantGames(schedule,[game,game,other,unrelated],'A');
   assert.deepEqual(board.games.map(g=>g.id),[1,3]);assert.deepEqual(board.idleTeams,[]);
   assert.deepEqual(relevantGames(schedule,[],'A').idleTeams,['A','B','FCS']);
+});
+test('one season-wide game response supplies team schedules and weekly scoreboards',()=>{
+  const weekOne={...game,id:10,week:1,homeTeam:'A',awayTeam:'B',startDate:'2026-09-05T16:00:00Z'};
+  const weekTwo={...game,id:11,week:2,homeTeam:'C',awayTeam:'A',startDate:'2026-09-12T16:00:00Z'};
+  const unrelated={...game,id:12,week:1,homeTeam:'C',awayTeam:'D',startDate:'2026-09-05T20:00:00Z'};
+  assert.deepEqual(scheduleForTeam([unrelated,weekTwo,weekOne],'A').map(g=>g.id),[10,11]);
+  assert.deepEqual(gamesForWeek([weekTwo,unrelated,weekOne],'regular:1').map(g=>g.id),[10,12]);
 });

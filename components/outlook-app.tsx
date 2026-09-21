@@ -61,9 +61,9 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
     url.searchParams.set('team',team);url.searchParams.set('year',String(year));
     window.history.replaceState(window.history.state,'',url);
   },[team,year,ready,view]);
-  const load = useCallback(async(signal:AbortSignal,background=false)=>{
+  const load = useCallback(async(signal:AbortSignal)=>{
     if(!ready||teamLoading||!team||view==='setup')return;
-    if(!background)setLoading(true);
+    setLoading(true);
     try {
       const params = new URLSearchParams({team,year:String(year)});if(week&&view==='scoreboard')params.set('week',week);
       const response=await fetch(`/api/outlook?${params}`,{signal});const value=await response.json();
@@ -73,8 +73,7 @@ export default function OutlookApp({view}:{view:'setup'|'schedule'|'scoreboard'}
   },[ready,teamLoading,teams,team,year,week,view]);
   useEffect(()=>{
     const controller=new AbortController();setData(null);load(controller.signal);
-    const timer=setInterval(()=>{if(document.visibilityState==='visible')load(controller.signal,true);},60000);
-    return()=>{controller.abort();clearInterval(timer);};
+    return()=>controller.abort();
   },[load]);
   const href = (path:string)=>`${path}?${new URLSearchParams({team,year:String(year)})}`;
   const selected=teams.find(t=>t.school===team) ?? (data?.team.school===team ? data.team : undefined);

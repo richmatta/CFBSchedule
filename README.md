@@ -41,19 +41,18 @@ Primary provider: [CollegeFootballData](https://api.collegefootballdata.com/). I
 
 | Endpoint | Use | Shared upstream cache |
 | --- | --- | --- |
-| `/teams/fbs?year=…` | Season-specific FBS membership and names | 24 hours |
-| `/games?year=…&team=…&seasonType=both` | Selected team's regular and announced postseason schedule/results | 5 minutes |
-| `/games?year=…&week=…&seasonType=…` | Week's games across divisions, including FCS opponents | 5 minutes |
-| `/records?year=…` | Opponent season records | 5 minutes |
-| `/calendar?year=…` | Week boundaries, including postseason in January | 1 hour |
-| `/ratings/sp?year=…` | Latest available selected-season SP+ | 1 hour |
-| `/ratings/elo?year=…&seasonType=both` | Defensible alternate ratings | 1 hour |
+| `/teams/fbs?year=…` | Season-specific FBS membership and names | 7 days |
+| `/games?year=…&seasonType=both` | One shared season dataset used for every team schedule and weekly scoreboard | 1 hour current / 30 days past |
+| `/records?year=…` | Opponent season records | 1 hour current / 30 days past |
+| `/calendar?year=…` | Week boundaries, including postseason in January | 24 hours current / 30 days past |
+| `/ratings/sp?year=…` | Fallback SP+ only when ESPN is unavailable | 24 hours current / 30 days past |
+| `/ratings/elo?year=…&seasonType=both` | Fallback ratings only when ESPN is unavailable or Elo is explicitly selected | 24 hours current / 30 days past |
 
 Docs: [games, records and calendar](https://api.collegefootballdata.com/api/games), [ratings](https://api.collegefootballdata.com/api/ratings), [teams](https://api.collegefootballdata.com/api/teams).
 
 The supplied key was verified on September 19, 2026: schedules, FBS directory, calendar, SP+, and Elo returned successfully. Live `/scoreboard` access requires a higher API tier and is intentionally disabled. The Opponent Scoreboard uses `/games`, so current results appear when that feed records them rather than as a live overlay. Refreshing the page does not bypass the provider cache.
 
-The browser refreshes every 60 seconds while visible. “Retrieved” is the app retrieval time, not the provider's last scoring update. Scores may lag five minutes plus provider delay; ratings may lag one hour plus publication delay. API schema validation, timeouts, explicit errors, and optional-endpoint warnings prevent quiet failures.
+The browser loads once when the team, season, or scoreboard week changes; there is no background polling. The Refresh button reloads the app response but does not bypass the shared upstream cache. “Retrieved” is the app retrieval time, not the provider's last scoring update. Current-season schedules, recorded scores, and records may lag up to one hour plus provider delay. API schema validation, timeouts, explicit errors, and optional-endpoint warnings prevent quiet failures.
 
 ## Probability methodology
 

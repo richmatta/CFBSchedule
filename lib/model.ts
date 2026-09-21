@@ -46,6 +46,12 @@ export function summarize(games: Game[], team: string, predictions: Record<numbe
   return { wins, losses, knownExpectedWins, missingPredictions, expectedWins: missingPredictions || !games.length ? null : knownExpectedWins };
 }
 export const weekKey = (week: Pick<Week, 'seasonType' | 'week'>) => `${week.seasonType}:${week.week}`;
+export function scheduleForTeam(games: Game[], team: string) {
+  return games.filter(game => game.homeTeam === team || game.awayTeam === team).sort((a,b) => a.startDate.localeCompare(b.startDate));
+}
+export function gamesForWeek(games: Game[], key: string) {
+  return games.filter(game => weekKey(game) === key).sort((a,b) => a.startDate.localeCompare(b.startDate));
+}
 export function currentWeek(weeks: Week[], now = new Date()) {
   const sorted = [...weeks].sort((a,b) => Date.parse(a.startDate) - Date.parse(b.startDate));
   const active = sorted.find(w => Date.parse(w.startDate) <= +now && Date.parse(w.endDate) >= +now);
