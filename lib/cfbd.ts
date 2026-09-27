@@ -65,7 +65,8 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const spSource = espn ? {name:'ESPN',publishedAt:espn.snapshot.publishedAt,retrievedAt:espn.snapshot.retrievedAt,url:espn.snapshot.sourceUrl} : sp.length ? {name:'CollegeFootballData',publishedAt:null} : undefined;
   if (espn) {
     const i=warnings.indexOf('SP+ unavailable; using Elo where possible.');if(i>=0)warnings.splice(i,1);
-    if(espn.fallback)warnings.push('ESPN refresh unavailable or older than the saved snapshot. Using the saved SP+ publication.');
+    if(espn.fallbackReason==='older-publication')warnings.push('ESPN returned an SP+ publication older than the saved snapshot. Using the saved publication.');
+    if(espn.fallbackReason==='refresh-failed')warnings.push('The latest ESPN SP+ publication could not be retrieved or validated. Using the saved publication.');
     if(Date.now()-Date.parse(espn.snapshot.publishedAt+'T00:00:00Z')>8*86400000)warnings.push('The available ESPN SP+ publication is more than eight days old. Predictions use the displayed publication date.');
   }
   const games = scheduleForTeam(allGames,team.school);
