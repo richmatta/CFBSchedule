@@ -14,11 +14,16 @@ const spSchema = z.object({team:z.string(),rating:nullableNumber,ranking:spRank,
 // Live-score access is intentionally disabled. The weekly scoreboard uses /games.
 // const liveSchema = z.object({id:z.number(),status:z.string(),period:nullableNumber.optional(),clock:z.string().nullable().optional(),homeTeam:z.object({points:nullableNumber}),awayTeam:z.object({points:nullableNumber})});
 export const isDemo = () => process.env.DEMO_MODE === 'true' || !process.env.CFBD_API_KEY;
+const memoryCache = new Map<string,{expires:number,value:Promise<unknown>}>();
 async function request<T>(path: string, params: Record<string,string|number>, schema: z.ZodType<T>, seconds = 300): Promise<T> {
   const query = new URLSearchParams(Object.entries(params).map(([k,v]) => [k,String(v)]));
-  const response = await fetch(`https://api.collegefootballdata.com${path}?${query}`, {headers:{Authorization:`Bearer ${process.env.CFBD_API_KEY}`},cache:'force-cache',next:{revalidate:seconds},signal:AbortSignal.timeout(15000)});
-  if (!response.ok) throw new Error(`Data provider returned ${response.status} for ${path}. ${response.status === 401 ? 'Check the API key.' : response.status === 429 ? 'API quota reached; try again later.' : 'Check endpoint access and try again.'}`);
-  return schema.parse(await response.json());
+  const key=`${path}?${query}`,cached=memoryCache.get(key);
+  if(cached&&cached.expires>Date.now())return cached.value as Promise<T>;
+  const value=(async()=>{const response = await fetch(`https://api.collegefootballdata.com${key}`, {headers:{Authorization:`Bearer ${process.env.CFBD_API_KEY}`},cache:'force-cache',next:{revalidate:seconds},signal:AbortSignal.timeout(15000)});
+    if (!response.ok) throw new Error(`Data provider returned ${response.status} for ${path}. ${response.status === 401 ? 'Check the API key.' : response.status === 429 ? 'API quota reached; try again later.' : 'Check endpoint access and try again.'}`);
+    return schema.parse(await response.json());})();
+  memoryCache.set(key,{expires:Date.now()+seconds*1000,value});
+  try{return await value;}catch(error){memoryCache.delete(key);throw error;}
 }
 export async function getTeams(year: number): Promise<Team[]> {
   if (isDemo()) return demoTeams;
