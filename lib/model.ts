@@ -1,29 +1,30 @@
-import type { Game, Prediction, Week } from './types';
-export type Ratings = { sp: Record<string, number>; elo: Record<string, number> };
-export function predict(game: Game, team: string, ratings: Ratings): Prediction {
+import type { ForecastModel, Game, Prediction, Week } from './types';
+export type Ratings = { sp: Record<string, number>; fei?: Record<string, number>; sagarin?: Record<string, number> };
+const labels: Record<ForecastModel, Prediction['model']> = {sp:'SP+',fei:'FEI',sagarin:'Sagarin'};
+export function predict(game: Game, team: string, ratings: Ratings, selected: ForecastModel = 'sp'): Prediction {
   const home = game.homeTeam === team;
   const opponent = home ? game.awayTeam : game.homeTeam;
   const location = game.neutralSite ? 0 : home ? 1 : -1;
-  if (Number.isFinite(ratings.sp[team]) && Number.isFinite(ratings.sp[opponent])) {
-    // Logistic margin model; transparent heuristic, not an official SP+ probability.
-    const margin = ratings.sp[team] - ratings.sp[opponent] + 2.5 * location;
-    return { probability: 1 / (1 + Math.exp(-margin / 9)), model: 'SP+' };
+  const values = ratings[selected] ?? {};
+  if (Number.isFinite(values[team]) && Number.isFinite(values[opponent])) {
+    // FEI is scoring advantage per possession; 12 possessions converts it to an estimated game margin.
+    const scale = selected === 'fei' ? 12 : 1;
+    const homeField = selected === 'sagarin' ? 4.28 : 2.5;
+    const margin = (values[team] - values[opponent]) * scale + homeField * location;
+    return { probability: 1 / (1 + Math.exp(-margin / 9)), model: labels[selected] };
   }
   // Explicit user assumption, restricted to confirmed cross-division games.
   const lowerDivisions = new Set(['fcs', 'ii', 'ii/iii', 'iii']);
   const powerConferences = new Set(['ACC', 'Big Ten', 'Big 12', 'SEC', 'Pac-12']);
   const qualifies = (name: string, classification?: string | null, conference?: string | null) =>
-    classification === 'fbs' && (Number.isFinite(ratings.sp[name]) || Number.isFinite(ratings.elo[name]) || powerConferences.has(conference ?? ''));
+    classification === 'fbs' && (Number.isFinite(values[name]) || powerConferences.has(conference ?? ''));
   const unratedLower = (name: string, classification?: string | null) =>
-    lowerDivisions.has(classification ?? '') && !Number.isFinite(ratings.sp[name]);
+    lowerDivisions.has(classification ?? '') && !Number.isFinite(values[name]);
   if (qualifies(game.homeTeam, game.homeClassification, game.homeConference) && unratedLower(game.awayTeam, game.awayClassification)) {
     return { probability: home ? 0.99 : 0.01, model: '99% assumption' };
   }
   if (qualifies(game.awayTeam, game.awayClassification, game.awayConference) && unratedLower(game.homeTeam, game.homeClassification)) {
     return { probability: home ? 0.01 : 0.99, model: '99% assumption' };
-  }
-  if (Number.isFinite(ratings.elo[team]) && Number.isFinite(ratings.elo[opponent])) {
-    return { probability: 1 / (1 + 10 ** (-(ratings.elo[team] - ratings.elo[opponent] + 55 * location) / 400)), model: 'Elo' };
   }
   return { probability: null, model: 'Unavailable' };
 }

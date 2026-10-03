@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { getEspnSp } from './espn-source';
+import { getExternalForecast } from './forecast-sources';
 import { demoTeams, demoSeason } from './demo';
 import { currentWeek, gamesForWeek, predict, relevantGames, scheduleForTeam, summarize, weekKey } from './model';
-import type { Game, Outlook, Team, Week } from './types';
+import type { ForecastModel, Game, Outlook, RatingSummary, Team, Week } from './types';
 const nullableNumber = z.number().nullable();
 const gameSchema = z.object({id:z.number(),week:z.number(),seasonType:z.string(),startDate:z.string(),startTimeTBD:z.boolean(),completed:z.boolean(),neutralSite:z.boolean(),homeTeam:z.string(),awayTeam:z.string(),homeClassification:z.string().nullable().optional(),awayClassification:z.string().nullable().optional(),homeConference:z.string().nullable().optional(),awayConference:z.string().nullable().optional(),homePoints:nullableNumber,awayPoints:nullableNumber,venue:z.string().nullable().optional()});
 const teamSchema = z.object({id:z.number(),school:z.string(),mascot:z.string().nullable().optional(),abbreviation:z.string().nullable().optional(),conference:z.string().nullable().optional(),color:z.string().nullable().optional()});
@@ -10,7 +11,6 @@ const weekSchema = z.object({week:z.number(),seasonType:z.string(),startDate:z.s
 const recordsSchema = z.object({team:z.string(),total:z.object({wins:z.number(),losses:z.number(),ties:z.number()})});
 const spRank = z.number().int().positive().nullish();
 const spSchema = z.object({team:z.string(),rating:nullableNumber,ranking:spRank,offense:z.object({ranking:spRank}).nullish(),defense:z.object({ranking:spRank}).nullish(),specialTeams:z.object({ranking:spRank}).nullish()});
-const eloSchema = z.object({team:z.string(),elo:nullableNumber});
 // Live-score access is intentionally disabled. The weekly scoreboard uses /games.
 // const liveSchema = z.object({id:z.number(),status:z.string(),period:nullableNumber.optional(),clock:z.string().nullable().optional(),homeTeam:z.object({points:nullableNumber}),awayTeam:z.object({points:nullableNumber})});
 export const isDemo = () => process.env.DEMO_MODE === 'true' || !process.env.CFBD_API_KEY;
@@ -33,7 +33,7 @@ export async function getTeam(school: string, year: number): Promise<Team | unde
   const team = (await request('/teams',{},z.array(teamSchema),2592000)).find(team => team.school === school);
   return team ? {id:String(team.id),school:team.school,mascot:team.mascot??'',abbreviation:team.abbreviation??team.school.slice(0,3).toUpperCase(),conference:team.conference??'',color:team.color??'#8c1515'} : undefined;
 }
-export async function getOutlook(team: Team, year: number, requestedWeek?: string): Promise<Outlook> {
+export async function getOutlook(team: Team, year: number, requestedWeek?: string, forecastModel: ForecastModel = 'sp'): Promise<Outlook> {
   const warnings: string[] = [];
   if (isDemo()) {
     const data = demoSeason(team,year);
@@ -42,8 +42,8 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
     const sampleGames = data.pool.map((opponent,i): Game => ({id:100000+i,week,seasonType:'regular',startDate:new Date(Date.UTC(year,8,5+(week-1)*7,19+i%3)).toISOString(),startTimeTBD:false,completed:i<3,neutralSite:false,homeTeam:opponent,awayTeam:`Sample opponent ${i+1}`,homePoints:i<5?21+i:null,awayPoints:i<5?14:null,status:i<3?'completed':i<5?'in_progress':'scheduled',period:i<5?3:null,clock:i<5?'08:24':null}));
     const ownGame = data.games.find(g=>g.week===week);
     const board = relevantGames(data.games, [...sampleGames.filter(g=>!ownGame || (g.homeTeam!==ownGame.homeTeam && g.homeTeam!==ownGame.awayTeam)),...(ownGame?[ownGame]:[])],team.school);
-    const predictions = Object.fromEntries(data.games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,data.ratings)]));
-    return {team,year,demo:true,spRatings:{},games:data.games,predictions,records:data.records,weeks:data.weeks,selectedWeek,currentWeek:'regular:4',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(data.games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings:['Illustrative schedules, scores, records, and ratings. These are not real game results. Demo team directory uses the 2025 FBS membership.']};
+    const predictions = Object.fromEntries(data.games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,data.ratings,forecastModel)]));
+    return {team,year,demo:true,forecastModel,modelRatings:{},spRatings:{},games:data.games,predictions,records:data.records,weeks:data.weeks,selectedWeek,currentWeek:'regular:4',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(data.games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings:['Illustrative schedules, scores, records, and ratings. These are not real game results. Demo team directory uses the 2025 FBS membership.']};
   }
   const optional = async <T>(promise: Promise<T>, fallback: T, message: string): Promise<T> => {try {return await promise;} catch {warnings.push(message);return fallback;}};
   const currentYear = new Date().getFullYear();
@@ -51,20 +51,20 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const gamesCache = changing ? 3600 : 2592000;
   const recordsCache = changing ? 3600 : 2592000;
   const referenceCache = changing ? 86400 : 2592000;
-  const enableSp = process.env.CFBD_SP_ENABLED === 'true' && process.env.RATING_MODEL !== 'elo';
+  const enableSp = process.env.CFBD_SP_ENABLED === 'true';
   const fbsTeams = await getTeams(year);
-  const espn = process.env.RATING_MODEL !== 'elo' ? await getEspnSp(year,fbsTeams) : null;
-  const [allGames,records,weeks,cfbdSp,elo] = await Promise.all([
+  const espn = forecastModel==='sp' ? await getEspnSp(year,fbsTeams) : null;
+  const external = forecastModel==='sp' ? null : await optional(getExternalForecast(forecastModel,year,fbsTeams),null,`${forecastModel==='fei'?'FEI':'Sagarin'} ratings are temporarily unavailable.`);
+  const [allGames,records,weeks,cfbdSp] = await Promise.all([
     request('/games',{year,seasonType:'both'},z.array(gameSchema),gamesCache),
     optional(request('/records',{year},z.array(recordsSchema),recordsCache),[],'Team records are temporarily unavailable.'),
     optional(request('/calendar',{year},z.array(weekSchema),referenceCache),[],'Season calendar unavailable; week selection is based on the team schedule.'),
-    !espn && enableSp ? optional(request('/ratings/sp',{year},z.array(spSchema),referenceCache),[],'SP+ unavailable; using Elo where possible.') : Promise.resolve([]),
-    !espn ? optional(request('/ratings/elo',{year,seasonType:'both'},z.array(eloSchema),referenceCache),[],'Elo ratings unavailable for this season.') : Promise.resolve([])
+    forecastModel==='sp'&&!espn&&enableSp ? optional(request('/ratings/sp',{year},z.array(spSchema),referenceCache),[],'SP+ ratings are temporarily unavailable.') : Promise.resolve([])
   ]);
   const sp = espn?.snapshot.ratings ?? cfbdSp;
   const spSource = espn ? {name:'ESPN',publishedAt:espn.snapshot.publishedAt,retrievedAt:espn.snapshot.retrievedAt,url:espn.snapshot.sourceUrl} : sp.length ? {name:'CollegeFootballData',publishedAt:null} : undefined;
   if (espn) {
-    const i=warnings.indexOf('SP+ unavailable; using Elo where possible.');if(i>=0)warnings.splice(i,1);
+    const i=warnings.indexOf('SP+ ratings are temporarily unavailable.');if(i>=0)warnings.splice(i,1);
     if(espn.fallbackReason==='older-publication')warnings.push('ESPN returned an SP+ publication older than the saved snapshot. Using the saved publication.');
     if(espn.fallbackReason==='refresh-failed')warnings.push('The latest ESPN SP+ publication could not be retrieved or validated. Using the saved publication.');
     if(Date.now()-Date.parse(espn.snapshot.publishedAt+'T00:00:00Z')>8*86400000)warnings.push('The available ESPN SP+ publication is more than eight days old. Predictions use the displayed publication date.');
@@ -79,8 +79,11 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const weekGames = gamesForWeek(allGames,selectedWeek);
   // Live-score overlay intentionally disabled because it requires a higher CFBD tier.
   // Historical, current-week, and future scoreboard results come from /games.
-  const ratings = {sp:Object.fromEntries(sp.filter(r=>r.rating!==null).map(r=>[r.team,r.rating as number])),elo:Object.fromEntries(elo.filter(r=>r.elo!==null).map(r=>[r.team,r.elo as number]))};
-  const predictions = Object.fromEntries(games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,ratings)]));
+  const spValues=Object.fromEntries(sp.filter(r=>r.rating!==null).map(r=>[r.team,r.rating as number]));
+  const ratings = {sp:spValues,fei:forecastModel==='fei'?external?.values??{}:{},sagarin:forecastModel==='sagarin'?external?.values??{}:{}};
+  const predictions = Object.fromEntries(games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,ratings,forecastModel)]));
   const board = relevantGames(games,weekGames,team.school);
-  return {team,year,demo:false,spSource,spRatings:Object.fromEntries(sp.map(r=>[r.team,{overallRank:r.ranking??null,offenseRank:r.offense?.ranking??null,defenseRank:r.defense?.ranking??null,specialTeamsRank:r.specialTeams?.ranking??null}])),games,predictions,records:Object.fromEntries(records.map(r=>[r.team,r.total])),weeks:calendar,selectedWeek,currentWeek:current?weekKey(current):'regular:1',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings};
+  const spRatings=Object.fromEntries(sp.map(r=>[r.team,{overallRank:r.ranking??null,offenseRank:r.offense?.ranking??null,defenseRank:r.defense?.ranking??null,specialTeamsRank:r.specialTeams?.ranking??null}]));
+  const modelRatings:Record<string,RatingSummary>=forecastModel==='sp'?Object.fromEntries(Object.entries(spRatings).map(([name,r])=>[name,{rank:r.overallRank,offenseRank:r.offenseRank,defenseRank:r.defenseRank,specialTeamsRank:r.specialTeamsRank}])):external?.summaries??{};
+  return {team,year,demo:false,forecastModel,ratingSource:forecastModel==='sp'?spSource:external?.source,modelRatings,spSource,spRatings,games,predictions,records:Object.fromEntries(records.map(r=>[r.team,r.total])),weeks:calendar,selectedWeek,currentWeek:current?weekKey(current):'regular:1',scoreboard:board.games,idleTeams:board.idleTeams,...summarize(games,team.school,predictions),fetchedAt:new Date().toISOString(),warnings};
 }

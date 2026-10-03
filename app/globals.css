@@ -35,10 +35,12 @@
 .sp-panel{border:1px solid var(--line);border-radius:10px;background:white;padding:22px 28px;margin-bottom:28px}
 .sp-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .sp-heading h2{font-size:1.5rem}.sp-heading p,.sp-note{font-size:.75rem;color:var(--muted)}
-.sp-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin:20px 0 12px}.sp-metrics>div+div{border-left:1px solid var(--line);padding-left:20px}
+.sp-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin:20px 0 12px}.sp-metrics.single-metric{grid-template-columns:minmax(0,220px)}.sp-metrics>div+div{border-left:1px solid var(--line);padding-left:20px}
 .sp-metrics dt{font-size:.875rem;color:var(--muted)}.sp-metrics dd{margin:5px 0 0;font:700 2.5rem var(--display);color:var(--green)}
 .matchup .opponent-sp{white-space:nowrap}
 @media(max-width:600px){.brand{font-size:.875rem;letter-spacing:0}.sp-panel{padding:20px 18px}.sp-metrics{gap:10px}.sp-metrics>div+div{padding-left:10px}.sp-metrics dt{font-size:.8125rem}.sp-metrics dd{font-size:2rem}.matchup p .opponent-sp{display:inline}}
+.quick-controls{max-width:620px}.quick-controls .team-control{max-width:230px}
+@media(max-width:600px){.quick-controls{display:grid;grid-template-columns:minmax(0,1fr) 44px 88px 100px;width:100%}.quick-controls .team-control{min-width:0}.quick-controls label:last-child{max-width:none}}
 
 .opponent-link{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}.opponent-link:hover{color:var(--green);text-decoration-color:currentColor}.opponent-link:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:2px}
 

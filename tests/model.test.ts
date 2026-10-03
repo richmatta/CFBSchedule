@@ -4,7 +4,7 @@ import { predict, outcome, summarize, currentWeek, gamesForWeek, relevantGames, 
 import type { Game, Week } from '../lib/types';
 const game: Game = {id:1,week:0,seasonType:'regular',startDate:'2026-08-29T19:00:00Z',startTimeTBD:false,completed:false,neutralSite:true,homeTeam:'A',awayTeam:'B',homePoints:null,awayPoints:null};
 test('equal neutral ratings produce 50%; home and away are complementary',()=>{
-  const ratings={sp:{A:20,B:20},elo:{}};
+  const ratings={sp:{A:20,B:20}};
   assert.equal(predict(game,'A',ratings).probability,.5);
   const home=predict({...game,neutralSite:false},'A',ratings).probability!;
   const away=predict({...game,neutralSite:false},'B',ratings).probability!;
@@ -12,25 +12,27 @@ test('equal neutral ratings produce 50%; home and away are complementary',()=>{
 });
 test('Stanford–Elon assumption contributes 0.99 to expected wins and is symmetric',()=>{
   const matchup={...game,homeTeam:'Stanford',awayTeam:'Elon',homeClassification:'fbs',awayClassification:'fcs',homeConference:'ACC'};
-  const ratings={sp:{Stanford:5},elo:{Stanford:1500,Elon:1400}};
+  const ratings={sp:{Stanford:5}};
   assert.deepEqual(predict(matchup,'Stanford',ratings),{probability:.99,model:'99% assumption'});
   assert.equal(predict(matchup,'Elon',ratings).probability,.01);
   assert.equal(predict({...matchup,homeTeam:'Elon',awayTeam:'Stanford',homeClassification:'fcs',awayClassification:'fbs',homeConference:null,awayConference:'ACC'},'Stanford',ratings).probability,.99);
   assert.equal(summarize([matchup],'Stanford',{1:predict(matchup,'Stanford',ratings)}).expectedWins,.99);
-  assert.equal(predict(matchup,'Stanford',{sp:{},elo:{}}).probability,.99);
+  assert.equal(predict(matchup,'Stanford',{sp:{}}).probability,.99);
 });
 test('lower-division assumption requires evidence; normal rating models stay intact',()=>{
-  const ratings={sp:{A:10},elo:{}};
+  const ratings={sp:{A:10}};
   assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',ratings).probability,.99);
   assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fbs'},'A',ratings).probability,null);
   assert.equal(predict(game,'A',ratings).probability,null);
-  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',{sp:{},elo:{}}).probability,null);
-  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',{sp:{A:10,B:5},elo:{}}).model,'SP+');
+  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',{sp:{}}).probability,null);
+  assert.equal(predict({...game,homeClassification:'fbs',awayClassification:'fcs'},'A',{sp:{A:10,B:5}}).model,'SP+');
 });
-test('SP+ takes precedence; Elo fallback uses both ratings from the same model',()=>{
-  assert.equal(predict(game,'A',{sp:{A:20,B:10},elo:{A:1400,B:1800}}).model,'SP+');
-  assert.equal(predict(game,'A',{sp:{A:20},elo:{A:1500,B:1500}}).probability,.5);
-  assert.equal(predict(game,'A',{sp:{A:20},elo:{B:1500}}).probability,null);
+test('the selected forecast model is used without mixing rating systems',()=>{
+  const ratings={sp:{A:20,B:10},fei:{A:.5,B:.5},sagarin:{A:80,B:70}};
+  assert.equal(predict(game,'A',ratings).model,'SP+');
+  assert.deepEqual(predict(game,'A',ratings,'fei'),{probability:.5,model:'FEI'});
+  assert.equal(predict(game,'A',ratings,'sagarin').model,'Sagarin');
+  assert.equal(predict(game,'A',{sp:{A:20},fei:{A:.5}},'fei').probability,null);
 });
 test('final wins replace probabilities; live scores do not count as wins',()=>{
   const live={...game,homePoints:21,awayPoints:0};
@@ -38,7 +40,7 @@ test('final wins replace probabilities; live scores do not count as wins',()=>{
   const final={...live,completed:true};
   assert.equal(outcome(final,'A'),'W');assert.equal(outcome(final,'B'),'L');
   assert.equal(summarize([final,{...game,id:2}],'A',{2:{probability:.75,model:'SP+'}}).expectedWins,1.75);
-  assert.equal(summarize([live],'A',{1:{probability:.6,model:'Elo'}}).expectedWins,.6);
+  assert.equal(summarize([live],'A',{1:{probability:.6,model:'FEI'}}).expectedWins,.6);
 });
 test('missing ratings cannot silently create a full-season total; cancellations excluded',()=>{
   assert.equal(summarize([game],'A',{}).expectedWins,null);
