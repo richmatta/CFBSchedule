@@ -38,7 +38,7 @@ export async function getTeam(school: string, year: number): Promise<Team | unde
   const team = (await request('/teams',{},z.array(teamSchema),2592000)).find(team => team.school === school);
   return team ? {id:String(team.id),school:team.school,mascot:team.mascot??'',abbreviation:team.abbreviation??team.school.slice(0,3).toUpperCase(),conference:team.conference??'',color:team.color??'#8c1515'} : undefined;
 }
-export async function getOutlook(team: Team, year: number, requestedWeek?: string, forecastModel: ForecastModel = 'sp'): Promise<Outlook> {
+export async function getOutlook(team: Team, year: number, requestedWeek?: string, forecastModel: ForecastModel = 'sp', fresh=false): Promise<Outlook> {
   const warnings: string[] = [];
   if (isDemo()) {
     const data = demoSeason(team,year);
@@ -58,8 +58,8 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const referenceCache = changing ? 86400 : 2592000;
   const enableSp = process.env.CFBD_SP_ENABLED === 'true';
   const fbsTeams = await getTeams(year);
-  const espn = forecastModel==='sp' ? await getEspnSp(year,fbsTeams) : null;
-  const external = forecastModel==='sp' ? null : await optional(getExternalForecast(forecastModel,year,fbsTeams),null,`${forecastModel==='fei'?'FEI':'Sagarin'} ratings are temporarily unavailable.`);
+  const espn = forecastModel==='sp' ? await getEspnSp(year,fbsTeams,fresh) : null;
+  const external = forecastModel==='sp' ? null : await optional(getExternalForecast(forecastModel,year,fbsTeams,fresh),null,`${forecastModel==='fei'?'FEI':'Sagarin'} ratings are temporarily unavailable.`);
   const [allGames,records,weeks,cfbdSp] = await Promise.all([
     request('/games',{year,seasonType:'both'},z.array(gameSchema),gamesCache),
     optional(request('/records',{year},z.array(recordsSchema),recordsCache),[],'Team records are temporarily unavailable.'),
