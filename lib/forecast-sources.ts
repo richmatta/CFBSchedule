@@ -34,9 +34,9 @@ export function parseSagarin(html:string,year:number,teams:Pick<Team,'school'>[]
   return {values,summaries,source:{name:'Sagarin',publishedAt:Number.isFinite(+date)?date.toISOString().slice(0,10):null,retrievedAt:now.toISOString(),url:'http://sagarin.com/sports/cfsend.htm',asOf:header[0]}};
 }
 
-export async function getExternalForecast(model:'fei'|'sagarin',year:number,teams:Team[]):Promise<ForecastSnapshot>{
+export async function getExternalForecast(model:'fei'|'sagarin',year:number,teams:Team[],fresh=false):Promise<ForecastSnapshot>{
   const url=model==='fei'?`https://bcftoys.com/${year}-fei`:'http://sagarin.com/sports/cfsend.htm';
-  const response=await fetch(url,{headers:{'User-Agent':'Mozilla/5.0 (compatible; CFB-Schedule-Outlook/1.0)'},cache:'force-cache',next:{revalidate:3600},signal:AbortSignal.timeout(15000)});
+  const response=await fetch(url,{headers:{'User-Agent':'Mozilla/5.0 (compatible; CFB-Schedule-Outlook/1.0)'},cache:fresh?'no-store':'force-cache',...(fresh?{}:{next:{revalidate:900}}),signal:AbortSignal.timeout(15000)});
   if(!response.ok)throw new Error(`${model==='fei'?'FEI':'Sagarin'} returned ${response.status}`);
   const html=await response.text();return model==='fei'?parseFei(html,year,teams):parseSagarin(html,year,teams);
 }
