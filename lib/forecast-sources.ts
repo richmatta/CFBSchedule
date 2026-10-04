@@ -26,12 +26,13 @@ export function parseSagarin(html:string,year:number,teams:Pick<Team,'school'>[]
   const values:Record<string,number>={},summaries:Record<string,RatingSummary>={},names=directory(teams);
   for(const line of text.split(/\r?\n/)){
     const match=line.match(/^\s*(\d+)\s+(.+?)\s+[A-Z-]+\s+=\s+([-+]?\d+(?:\.\d+)?).*?\|.*?\|\s*([-+]?\d+(?:\.\d+)?)\s+(\d+)\s*\|/);
-    if(!match)continue;const team=names.get(normalize(match[2]));if(!team||team in values)continue;values[team]=Number(match[4]);summaries[team]={rank:Number(match[5])};
+    if(!match)continue;const team=names.get(normalize(match[2]));if(!team||team in values)continue;values[team]=Number(match[4]);summaries[team]={rank:Number(match[1])};
   }
   validate(values,teams);
   const dateParts=header[1].match(/^([A-Z]+)\s+(\d{1,2})/i);
   const date=new Date(`${dateParts?.[1]??''} ${dateParts?.[2]??''}, ${year} 12:00:00 UTC`);
-  return {values,summaries,source:{name:'Sagarin',publishedAt:Number.isFinite(+date)?date.toISOString().slice(0,10):null,retrievedAt:now.toISOString(),url:'http://sagarin.com/sports/cfsend.htm',asOf:header[0]}};
+  const asOf=`Through games of ${header[1].replace(/\s+(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\s*-\s*/i,' · ')}`;
+  return {values,summaries,source:{name:'Sagarin',publishedAt:Number.isFinite(+date)?date.toISOString().slice(0,10):null,retrievedAt:now.toISOString(),url:'http://sagarin.com/sports/cfsend.htm',asOf}};
 }
 
 export async function getExternalForecast(model:'fei'|'sagarin',year:number,teams:Team[],fresh=false):Promise<ForecastSnapshot>{
