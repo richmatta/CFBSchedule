@@ -10,8 +10,9 @@ export function parseEspnSp(html:string,year:number,teams:Pick<Team,'school'>[],
   const heading=$('h1').map((_,e)=>$(e).text()).get().join(' ');
   if(!heading.includes(String(year))||!heading.includes('SP+'))throw new Error('Wrong ESPN season or article');
   const asOf=$('p').map((_,e)=>$(e).text()).get().join(' ').match(/updated\s+(\d{4})\s+SP\+ rankings as of\s+([A-Za-z.]+\s+\d{1,2},\s+\d{4})/i);
-  if(!asOf||Number(asOf[1])!==year)throw new Error('Missing ratings publication date');
-  const date=new Date(asOf[2].replace('Sept.','Sep')+' 12:00:00 GMT');
+  const issued=$('meta[name="DC.date.issued"]').attr('content');
+  const date=asOf?new Date(asOf[2].replace('Sept.','Sep')+' 12:00:00 GMT'):new Date(issued??'');
+  if((asOf&&Number(asOf[1])!==year)||(!asOf&&!issued))throw new Error('Missing ratings publication date');
   if(!Number.isFinite(date.getTime())||date.getUTCFullYear()!==year||date.getTime()>now.getTime()+86400000)throw new Error('Invalid ratings date');
   const publishedAt=date.toISOString().slice(0,10);
   const directory=new Map(teams.map(t=>[normalize(t.school),t.school]));
