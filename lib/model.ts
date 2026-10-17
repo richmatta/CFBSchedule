@@ -1,5 +1,5 @@
 import type { ForecastModel, Game, Prediction, Week } from './types';
-export type Ratings = { sp: Record<string, number>; fei?: Record<string, number>; sagarin?: Record<string, number> };
+export type Ratings = { sp: Record<string, number>; fei?: Record<string, number>; sagarin?: Record<string, number>; sagarinHomeField?: number };
 const labels: Record<ForecastModel, Prediction['model']> = {sp:'SP+',fei:'FEI',sagarin:'Sagarin'};
 export function predict(game: Game, team: string, ratings: Ratings, selected: ForecastModel = 'sp'): Prediction {
   const home = game.homeTeam === team;
@@ -9,7 +9,7 @@ export function predict(game: Game, team: string, ratings: Ratings, selected: Fo
   if (Number.isFinite(values[team]) && Number.isFinite(values[opponent])) {
     // FEI is scoring advantage per possession; 12 possessions converts it to an estimated game margin.
     const scale = selected === 'fei' ? 12 : 1;
-    const homeField = selected === 'sagarin' ? 4.28 : 2.5;
+    const homeField = selected === 'sagarin' ? ratings.sagarinHomeField ?? 4.28 : 2.5;
     const margin = (values[team] - values[opponent]) * scale + homeField * location;
     return { probability: 1 / (1 + Math.exp(-margin / 9)), model: labels[selected] };
   }
