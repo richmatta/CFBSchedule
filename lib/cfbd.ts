@@ -59,7 +59,8 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   const enableSp = process.env.CFBD_SP_ENABLED === 'true';
   const fbsTeams = await getTeams(year);
   const espn = forecastModel==='sp' ? await getEspnSp(year,fbsTeams,fresh) : null;
-  const external = forecastModel==='sp' ? null : await optional(getExternalForecast(forecastModel,year,fbsTeams,fresh),null,`${forecastModel==='fei'?'FEI':'Sagarin'} ratings are temporarily unavailable.`);
+  const externalTeams=forecastModel==='sagarin'?(await request('/teams',{},z.array(teamSchema),2592000)).map(({school})=>({school})):fbsTeams;
+  const external = forecastModel==='sp' ? null : await optional(getExternalForecast(forecastModel,year,externalTeams,fresh),null,`${forecastModel==='fei'?'FEI':'Sagarin'} ratings are temporarily unavailable.`);
   const [allGames,records,weeks,cfbdSp] = await Promise.all([
     request('/games',{year,seasonType:'both'},z.array(gameSchema),gamesCache),
     optional(request('/records',{year},z.array(recordsSchema),recordsCache),[],'Team records are temporarily unavailable.'),
@@ -85,7 +86,7 @@ export async function getOutlook(team: Team, year: number, requestedWeek?: strin
   // Live-score overlay intentionally disabled because it requires a higher CFBD tier.
   // Historical, current-week, and future scoreboard results come from /games.
   const spValues=Object.fromEntries(sp.filter(r=>r.rating!==null).map(r=>[r.team,r.rating as number]));
-  const ratings = {sp:spValues,fei:forecastModel==='fei'?external?.values??{}:{},sagarin:forecastModel==='sagarin'?external?.values??{}:{}};
+  const ratings = {sp:spValues,fei:forecastModel==='fei'?external?.values??{}:{},sagarin:forecastModel==='sagarin'?external?.values??{}:{},sagarinHomeField:external?.homeField};
   const predictions = Object.fromEntries(games.filter(g=>!g.completed).map(g=>[g.id,predict(g,team.school,ratings,forecastModel)]));
   const board = relevantGames(games,weekGames,team.school);
   const spRatings=Object.fromEntries(sp.map(r=>[r.team,{overallRank:r.ranking??null,offenseRank:r.offense?.ranking??null,defenseRank:r.defense?.ranking??null,specialTeamsRank:r.specialTeams?.ranking??null}]));
