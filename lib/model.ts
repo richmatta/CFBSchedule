@@ -46,6 +46,28 @@ export function summarize(games: Game[], team: string, predictions: Record<numbe
   }
   return { wins, losses, knownExpectedWins, missingPredictions, expectedWins: missingPredictions || !games.length ? null : knownExpectedWins };
 }
+export type FinalRecordProbability = { wins: number; losses: number; ties: number; probability: number };
+export function finalRecordDistribution(games: Game[], team: string, predictions: Record<number, Prediction>): FinalRecordProbability[] | null {
+  if (!games.length) return null;
+  let wins=0,losses=0,ties=0;
+  const remaining:number[]=[];
+  for(const game of games){
+    if(['canceled','cancelled'].includes(game.status??''))continue;
+    const result=outcome(game,team);
+    if(result==='W')wins++;
+    else if(result==='L')losses++;
+    else if(result==='T')ties++;
+    else if(game.completed)return null;
+    else {const probability=predictions[game.id]?.probability;if(probability==null||probability<0||probability>1)return null;remaining.push(probability);}
+  }
+  let additionalWins=[1];
+  for(const probability of remaining){
+    const next=Array(additionalWins.length+1).fill(0) as number[];
+    for(let i=0;i<additionalWins.length;i++){next[i]+=additionalWins[i]*(1-probability);next[i+1]+=additionalWins[i]*probability;}
+    additionalWins=next;
+  }
+  return additionalWins.map((probability,index)=>({wins:wins+index,losses:losses+remaining.length-index,ties,probability}));
+}
 export const weekKey = (week: Pick<Week, 'seasonType' | 'week'>) => `${week.seasonType}:${week.week}`;
 export function scheduleForTeam(games: Game[], team: string) {
   return games.filter(game => game.homeTeam === team || game.awayTeam === team).sort((a,b) => a.startDate.localeCompare(b.startDate));
