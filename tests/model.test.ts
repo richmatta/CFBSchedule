@@ -34,6 +34,12 @@ test('the selected forecast model is used without mixing rating systems',()=>{
   assert.equal(predict(game,'A',ratings,'sagarin').model,'Sagarin');
   assert.equal(predict(game,'A',{sp:{A:20},fei:{A:.5}},'fei').probability,null);
 });
+test('rated FCS opponents use the selected model instead of the 99% fallback',()=>{
+  const matchup={...game,neutralSite:false,homeTeam:'Stanford',awayTeam:'Elon',homeClassification:'fbs',awayClassification:'fcs',homeConference:'ACC'};
+  const prediction=predict(matchup,'Stanford',{sp:{},sagarin:{Stanford:60.69,Elon:40.38},sagarinHomeField:4.01},'sagarin');
+  assert.equal(prediction.model,'Sagarin');assert.ok(prediction.probability!>.93&&prediction.probability!<.94);
+  assert.equal(predict(matchup,'Stanford',{sp:{},fei:{Stanford:-.5}},'fei').model,'99% assumption');
+});
 test('final wins replace probabilities; live scores do not count as wins',()=>{
   const live={...game,homePoints:21,awayPoints:0};
   assert.equal(outcome(live,'A'),null);
