@@ -81,3 +81,28 @@
 @media(max-width:1000px){
   .team-theme input,.team-theme select,.team-theme textarea{font-size:16px}
 }
+/* Exact final-record probability distribution. */
+.record-distribution-panel{margin-top:28px;background:white;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.record-distribution-panel .section-heading{border-bottom:1px solid var(--line)}
+.record-callout{display:flex;flex-direction:column;align-items:flex-end;gap:3px;text-align:right}
+.record-callout span{font-size:.6875rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.record-callout strong{font:700 1.4rem var(--display);color:var(--green)}
+.record-chart-scroll{overflow-x:auto;overscroll-behavior-inline:contain;padding:24px 28px 0}
+.record-chart{display:grid;gap:10px;align-items:end;min-width:100%;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to top,transparent 0,transparent 44px,#edf1ed 45px);padding:0 8px}
+.record-outcome{text-align:center;min-width:48px}
+.record-bar-space{height:184px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.record-percent{font-size:.6875rem;color:var(--muted);font-variant-numeric:tabular-nums;margin-bottom:6px;white-space:nowrap}
+.record-bar{display:block;width:min(38px,72%);min-height:2px;background:#b8c1ba;border-radius:5px 5px 0 0}
+.record-outcome.most-likely .record-bar{background:var(--green)}
+.record-outcome>strong{display:block;padding:10px 0 13px;font:.7rem var(--body);font-weight:700;white-space:nowrap}
+.record-chart-note{padding:14px 28px 22px;font-size:.75rem;color:var(--muted)}
+.record-distribution-empty{padding:30px 28px;color:var(--muted);font-size:.875rem}
+@media(max-width:600px){
+  .record-distribution-panel{margin-top:18px}
+  .record-distribution-panel .section-heading{align-items:flex-start}
+  .record-distribution-panel .section-heading h2{font-size:1.65rem}
+  .record-callout strong{font-size:1.2rem}
+  .record-chart-scroll{padding:18px 12px 0}
+  .record-chart{gap:6px;padding:0 4px}
+  .record-chart-note{padding:12px 18px 18px}
+}
