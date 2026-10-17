@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { predict, outcome, summarize, currentWeek, gamesForWeek, relevantGames, scheduleForTeam, weekKey } from '../lib/model';
+import { predict, outcome, summarize, finalRecordDistribution, currentWeek, gamesForWeek, relevantGames, scheduleForTeam, weekKey } from '../lib/model';
 import type { Game, Week } from '../lib/types';
 const game: Game = {id:1,week:0,seasonType:'regular',startDate:'2026-08-29T19:00:00Z',startTimeTBD:false,completed:false,neutralSite:true,homeTeam:'A',awayTeam:'B',homePoints:null,awayPoints:null};
 test('equal neutral ratings produce 50%; home and away are complementary',()=>{
@@ -52,6 +52,16 @@ test('missing ratings cannot silently create a full-season total; cancellations 
   assert.equal(summarize([game],'A',{}).expectedWins,null);
   assert.equal(summarize([],'A',{}).expectedWins,null);
   assert.equal(summarize([{...game,status:'canceled'}],'A',{}).missingPredictions,0);
+});
+test('final record distribution is the exact Poisson-binomial distribution',()=>{
+  const games=[{...game,id:1,completed:true,homePoints:21,awayPoints:10},{...game,id:2},{...game,id:3},{...game,id:4,status:'canceled'}];
+  const distribution=finalRecordDistribution(games,'A',{2:{probability:.75,model:'SP+'},3:{probability:.4,model:'SP+'}})!;
+  assert.deepEqual(distribution.map(({wins,losses,ties})=>({wins,losses,ties})),[{wins:1,losses:2,ties:0},{wins:2,losses:1,ties:0},{wins:3,losses:0,ties:0}]);
+  assert.ok(Math.abs(distribution[0].probability-.15)<1e-12);
+  assert.ok(Math.abs(distribution[1].probability-.55)<1e-12);
+  assert.ok(Math.abs(distribution[2].probability-.30)<1e-12);
+  assert.ok(Math.abs(distribution.reduce((sum,row)=>sum+row.probability,0)-1)<1e-12);
+  assert.equal(finalRecordDistribution([game],'A',{}),null);
 });
 test('calendar handles week zero, postseason in January, pre- and offseason',()=>{
   const weeks:Week[]=[{week:0,seasonType:'regular',startDate:'2026-08-25',endDate:'2026-08-31'},{week:1,seasonType:'postseason',startDate:'2026-12-15',endDate:'2027-01-22'}];
