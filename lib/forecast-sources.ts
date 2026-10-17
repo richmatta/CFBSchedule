@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import type { RatingSource, RatingSummary, Team } from './types';
 
-export type ForecastSnapshot = {values:Record<string,number>;summaries:Record<string,RatingSummary>;source:RatingSource};
+export type ForecastSnapshot = {values:Record<string,number>;summaries:Record<string,RatingSummary>;source:RatingSource;homeField?:number};
 const normalize=(name:string)=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\bst\.?\b/g,'state').replace(/[^a-z0-9]/g,'');
 const aliases:Record<string,string>={'miamiflorida':'Miami','miamiohio':'Miami (OH)','southerncalifornia':'USC','southernmississippi':'Southern Miss','brighamyoung':'BYU','texasam':'Texas A&M','northcarolinastate':'NC State','mississippi':'Ole Miss','centralfloridaucf':'UCF','armywestpoint':'Army','appalachianstate':'App State','flainternational':'Florida International','floridainternational':'Florida International','samhoustonstate':'Sam Houston','louisianalafayette':'Louisiana','louisianamonroeulm':'UL Monroe','louisianamonroe':'UL Monroe','massachusetts':'Massachusetts','connecticut':'UConn','hawaii':'Hawai’i'};
 function directory(teams:Pick<Team,'school'>[]){const map=new Map(teams.map(t=>[normalize(t.school),t.school]));for(const [from,to] of Object.entries(aliases)){const match=map.get(normalize(to));if(match)map.set(from,match);}return map;}
@@ -32,10 +32,12 @@ export function parseSagarin(html:string,year:number,teams:Pick<Team,'school'>[]
   const dateParts=header[1].match(/^([A-Z]+)\s+(\d{1,2})/i);
   const date=new Date(`${dateParts?.[1]??''} ${dateParts?.[2]??''}, ${year} 12:00:00 UTC`);
   const asOf=`Through games of ${header[1].replace(/\s+(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\s*-\s*/i,' · ')}`;
-  return {values,summaries,source:{name:'Sagarin',publishedAt:Number.isFinite(+date)?date.toISOString().slice(0,10):null,retrievedAt:now.toISOString(),url:'http://sagarin.com/sports/cfsend.htm',asOf}};
+  const homeFieldMatch=text.match(/HOME ADVANTAGE=\[\s*[-+]?\d+(?:\.\d+)?\]\s*\[\s*([-+]?\d+(?:\.\d+)?)\]/i);
+  const homeField=Number(homeFieldMatch?.[1]);
+  return {values,summaries,source:{name:'Sagarin',publishedAt:Number.isFinite(+date)?date.toISOString().slice(0,10):null,retrievedAt:now.toISOString(),url:'http://sagarin.com/sports/cfsend.htm',asOf},homeField:Number.isFinite(homeField)?homeField:undefined};
 }
 
-export async function getExternalForecast(model:'fei'|'sagarin',year:number,teams:Team[],fresh=false):Promise<ForecastSnapshot>{
+export async function getExternalForecast(model:'fei'|'sagarin',year:number,teams:Pick<Team,'school'>[],fresh=false):Promise<ForecastSnapshot>{
   const url=model==='fei'?`https://bcftoys.com/${year}-fei`:'http://sagarin.com/sports/cfsend.htm';
   const response=await fetch(url,{headers:{'User-Agent':'Mozilla/5.0 (compatible; CFB-Schedule-Outlook/1.0)'},cache:fresh?'no-store':'force-cache',...(fresh?{}:{next:{revalidate:900}}),signal:AbortSignal.timeout(15000)});
   if(!response.ok)throw new Error(`${model==='fei'?'FEI':'Sagarin'} returned ${response.status}`);
