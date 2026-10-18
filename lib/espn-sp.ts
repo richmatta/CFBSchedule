@@ -3,7 +3,7 @@ import type { Team } from './types';
 export const ESPN_SP_URL = 'https://www.espn.com/college-football/story/_/id/49868647/2026-college-football-sp%2B-rankings-all-138-fbs-teams';
 export type SpRow = {team:string;rating:number;ranking:number;offense:{ranking:number};defense:{ranking:number};specialTeams:{ranking:number}};
 export type SpSnapshot = {year:number;publishedAt:string;retrievedAt:string;sourceUrl:string;ratings:SpRow[]};
-const aliases: Record<string,string> = {'S. Carolina':'South Carolina','Va. Tech':'Virginia Tech','Miss. St.':'Mississippi State','N. Dakota St':'North Dakota State','NDSU':'North Dakota State','JMU':'James Madison','N. Carolina':'North Carolina','Ga. Tech':'Georgia Tech','W. Virginia':'West Virginia','USF':'South Florida','WMU':'Western Michigan',"J'ville St.":'Jacksonville State','JSU':'Jacksonville State','Boston Coll.':'Boston College','Wash. St.':'Washington State','ECU':'East Carolina','ODU':'Old Dominion','FAU':'Florida Atlantic','Ga. Southern':'Georgia Southern','La. Tech':'Louisiana Tech','Coastal Caro.':'Coastal Carolina','S. Alabama':'South Alabama','FIU':'Florida International','Kennesaw':'Kennesaw State','KSU':'Kennesaw State','CMU':'Central Michigan','New Mex. St.':'New Mexico State','N. Mex. St.':'New Mexico State','NMSU':'New Mexico State','BGSU':'Bowling Green','WKU':'Western Kentucky','MTSU':'Middle Tennessee','EMU':'Eastern Michigan','So. Miss':'Southern Miss','N. Illinois':'Northern Illinois','NIU':'Northern Illinois','UMass':'Massachusetts','Sac State':'Sacramento State','ULM':'UL Monroe','SHSU':'Sam Houston'};
+const aliases: Record<string,string> = {'S. Carolina':'South Carolina','Va. Tech':'Virginia Tech','Miss. St.':'Mississippi State','N. Dakota St':'North Dakota State','NDSU':'North Dakota State','JMU':'James Madison','N. Carolina':'North Carolina','Ga. Tech':'Georgia Tech','W. Virginia':'West Virginia','USF':'South Florida','WMU':'Western Michigan',"J'ville St.":'Jacksonville State','Jax St.':'Jacksonville State','JSU':'Jacksonville State','Boston Coll.':'Boston College','Wash. St.':'Washington State','ECU':'East Carolina','ODU':'Old Dominion','FAU':'Florida Atlantic','Ga. Southern':'Georgia Southern','La. Tech':'Louisiana Tech','Coastal Caro.':'Coastal Carolina','S. Alabama':'South Alabama','FIU':'Florida International','Kennesaw':'Kennesaw State','KSU':'Kennesaw State','CMU':'Central Michigan','New Mex. St.':'New Mexico State','N. Mex. St.':'New Mexico State','NMSU':'New Mexico State','BGSU':'Bowling Green','WKU':'Western Kentucky','MTSU':'Middle Tennessee','EMU':'Eastern Michigan','So. Miss':'Southern Miss','N. Illinois':'Northern Illinois','NIU':'Northern Illinois','UMass':'Massachusetts','Sac State':'Sacramento State','ULM':'UL Monroe','SHSU':'Sam Houston'};
 const normalize = (name:string)=>name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\bst\.?\b/g,'state').replace(/[^a-z0-9]/g,'');
 export function parseEspnSp(html:string,year:number,teams:Pick<Team,'school'>[],now=new Date()):SpSnapshot {
   const $=load(html);
@@ -19,15 +19,25 @@ export function parseEspnSp(html:string,year:number,teams:Pick<Team,'school'>[],
   const table=$('table').filter((_,e)=>$(e).find('th').map((_,h)=>$(h).text().trim()).get().slice(0,4).join('|')==='Team|Rating|Offense|Defense');
   if(table.length!==1)throw new Error('Missing or ambiguous SP+ table');
   const ratings:SpRow[]=[];
+  const unresolved:{label:string;row:Omit<SpRow,'team'>}[]=[];
   table.find('tbody tr').each((_,row)=>{
     const cells=$(row).find('td').map((_,e)=>$(e).text().trim()).get();
     const match=cells[0]?.match(/^(\d+)\.\s+(.+?)\s+\(\d+-\d+(?:-\d+)?\)$/);
     const offense=cells[2]?.match(/^[-+]?\d+(?:\.\d+)?\s+\((\d+)\)$/),defense=cells[3]?.match(/^[-+]?\d+(?:\.\d+)?\s+\((\d+)\)$/),specialTeams=cells[4]?.match(/^[-+]?\d+(?:\.\d+)?\s+\((\d+)\)$/);
     if(!match||!offense||!defense||!specialTeams||!/^[-+]?\d+(?:\.\d+)?$/.test(cells[1]??''))throw new Error('Malformed SP+ row');
+    const parsed={rating:Number(cells[1]),ranking:Number(match[1]),offense:{ranking:Number(offense[1])},defense:{ranking:Number(defense[1])},specialTeams:{ranking:Number(specialTeams[1])}};
     const team=directory.get(normalize(aliases[match[2]]??match[2]));
-    if(!team)throw new Error(`Unknown ESPN team: ${match[2]}`);
-    ratings.push({team,rating:Number(cells[1]),ranking:Number(match[1]),offense:{ranking:Number(offense[1])},defense:{ranking:Number(defense[1])},specialTeams:{ranking:Number(specialTeams[1])}});
+    if(team)ratings.push({team,...parsed});else unresolved.push({label:match[2],row:parsed});
   });
+  // ESPN occasionally changes exactly one abbreviation without warning. If all
+  // other teams match, the sole remaining directory entry is unambiguous.
+  if(unresolved.length){
+    const used=new Set(ratings.map(r=>r.team));
+    const missing=teams.map(t=>t.school).filter(team=>!used.has(team));
+    if(unresolved.length!==1||missing.length!==1)throw new Error(`Unknown ESPN teams: ${unresolved.map(r=>r.label).join(', ')}`);
+    ratings.push({team:missing[0],...unresolved[0].row});
+    ratings.sort((a,b)=>a.ranking-b.ranking);
+  }
   if(ratings.length!==teams.length||new Set(ratings.map(r=>r.team)).size!==teams.length)throw new Error('Incomplete or duplicate SP+ teams');
   for(const ranks of [ratings.map(r=>r.ranking),ratings.map(r=>r.offense.ranking),ratings.map(r=>r.defense.ranking),ratings.map(r=>r.specialTeams.ranking)]){
     if(new Set(ranks).size!==teams.length||ranks.some(r=>r<1||r>teams.length))throw new Error('Invalid SP+ ranks');
