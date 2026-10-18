@@ -1,1525 +1,1939 @@
 {
   "year": 2026,
-  "publishedAt": "2026-09-20",
-  "retrievedAt": "2026-09-21T17:31:18.993Z",
+  "publishedAt": "2026-10-18",
+  "retrievedAt": "2026-10-18T22:23:16.935Z",
   "sourceUrl": "https://www.espn.com/college-football/story/_/id/49868647/2026-college-football-sp%2B-rankings-all-138-fbs-teams",
   "ratings": [
     {
       "team": "Ohio State",
-      "rating": 29.7,
+      "rating": 26.8,
       "ranking": 1,
       "offense": {
-        "ranking": 5
+        "ranking": 6
       },
       "defense": {
         "ranking": 1
+      },
+      "specialTeams": {
+        "ranking": 84
       }
     },
     {
       "team": "Georgia",
-      "rating": 28.2,
+      "rating": 26.5,
       "ranking": 2,
       "offense": {
         "ranking": 2
       },
       "defense": {
-        "ranking": 3
-      }
-    },
-    {
-      "team": "Notre Dame",
-      "rating": 26.7,
-      "ranking": 3,
-      "offense": {
         "ranking": 4
       },
-      "defense": {
-        "ranking": 6
-      }
-    },
-    {
-      "team": "Indiana",
-      "rating": 25.8,
-      "ranking": 4,
-      "offense": {
-        "ranking": 7
-      },
-      "defense": {
-        "ranking": 4
-      }
-    },
-    {
-      "team": "Oregon",
-      "rating": 24.4,
-      "ranking": 5,
-      "offense": {
-        "ranking": 6
-      },
-      "defense": {
-        "ranking": 12
-      }
-    },
-    {
-      "team": "Texas",
-      "rating": 24.1,
-      "ranking": 6,
-      "offense": {
-        "ranking": 8
-      },
-      "defense": {
-        "ranking": 8
-      }
-    },
-    {
-      "team": "Miami",
-      "rating": 23.2,
-      "ranking": 7,
-      "offense": {
-        "ranking": 9
-      },
-      "defense": {
-        "ranking": 7
-      }
-    },
-    {
-      "team": "USC",
-      "rating": 21.6,
-      "ranking": 8,
-      "offense": {
-        "ranking": 1
-      },
-      "defense": {
-        "ranking": 35
-      }
-    },
-    {
-      "team": "LSU",
-      "rating": 20.3,
-      "ranking": 9,
-      "offense": {
-        "ranking": 26
-      },
-      "defense": {
+      "specialTeams": {
         "ranking": 5
       }
     },
     {
-      "team": "Tennessee",
-      "rating": 20.2,
-      "ranking": 10,
+      "team": "Miami",
+      "rating": 25.3,
+      "ranking": 3,
+      "offense": {
+        "ranking": 1
+      },
+      "defense": {
+        "ranking": 10
+      },
+      "specialTeams": {
+        "ranking": 29
+      }
+    },
+    {
+      "team": "Notre Dame",
+      "rating": 24.8,
+      "ranking": 4,
       "offense": {
         "ranking": 3
       },
       "defense": {
-        "ranking": 34
+        "ranking": 8
+      },
+      "specialTeams": {
+        "ranking": 27
       }
     },
     {
-      "team": "Alabama",
-      "rating": 19.5,
+      "team": "Indiana",
+      "rating": 23.6,
+      "ranking": 5,
+      "offense": {
+        "ranking": 12
+      },
+      "defense": {
+        "ranking": 2
+      },
+      "specialTeams": {
+        "ranking": 50
+      }
+    },
+    {
+      "team": "LSU",
+      "rating": 22.6,
+      "ranking": 6,
+      "offense": {
+        "ranking": 10
+      },
+      "defense": {
+        "ranking": 7
+      },
+      "specialTeams": {
+        "ranking": 109
+      }
+    },
+    {
+      "team": "Texas Tech",
+      "rating": 21.9,
+      "ranking": 7,
+      "offense": {
+        "ranking": 8
+      },
+      "defense": {
+        "ranking": 13
+      },
+      "specialTeams": {
+        "ranking": 24
+      }
+    },
+    {
+      "team": "Texas",
+      "rating": 21.1,
+      "ranking": 8,
+      "offense": {
+        "ranking": 19
+      },
+      "defense": {
+        "ranking": 5
+      },
+      "specialTeams": {
+        "ranking": 49
+      }
+    },
+    {
+      "team": "BYU",
+      "rating": 20.6,
+      "ranking": 9,
+      "offense": {
+        "ranking": 17
+      },
+      "defense": {
+        "ranking": 9
+      },
+      "specialTeams": {
+        "ranking": 22
+      }
+    },
+    {
+      "team": "Utah",
+      "rating": 19.4,
+      "ranking": 10,
+      "offense": {
+        "ranking": 11
+      },
+      "defense": {
+        "ranking": 20
+      },
+      "specialTeams": {
+        "ranking": 60
+      }
+    },
+    {
+      "team": "Oregon",
+      "rating": 18.8,
       "ranking": 11,
       "offense": {
         "ranking": 18
       },
       "defense": {
-        "ranking": 10
+        "ranking": 15
+      },
+      "specialTeams": {
+        "ranking": 23
       }
     },
     {
-      "team": "Penn State",
-      "rating": 19.1,
+      "team": "Alabama",
+      "rating": 18.5,
       "ranking": 12,
       "offense": {
-        "ranking": 14
+        "ranking": 13
       },
       "defense": {
-        "ranking": 14
+        "ranking": 23
+      },
+      "specialTeams": {
+        "ranking": 25
       }
     },
     {
-      "team": "Texas Tech",
-      "rating": 18.5,
+      "team": "Tennessee",
+      "rating": 17.5,
       "ranking": 13,
       "offense": {
-        "ranking": 12
+        "ranking": 25
       },
       "defense": {
-        "ranking": 16
-      }
-    },
-    {
-      "team": "Texas A&M",
-      "rating": 18.3,
-      "ranking": 14,
-      "offense": {
-        "ranking": 10
+        "ranking": 17
       },
-      "defense": {
-        "ranking": 19
-      }
-    },
-    {
-      "team": "Florida",
-      "rating": 17.8,
-      "ranking": 15,
-      "offense": {
-        "ranking": 20
-      },
-      "defense": {
-        "ranking": 15
-      }
-    },
-    {
-      "team": "Oklahoma",
-      "rating": 17.6,
-      "ranking": 16,
-      "offense": {
-        "ranking": 48
-      },
-      "defense": {
-        "ranking": 2
-      }
-    },
-    {
-      "team": "BYU",
-      "rating": 17.5,
-      "ranking": 17,
-      "offense": {
-        "ranking": 16
-      },
-      "defense": {
-        "ranking": 18
-      }
-    },
-    {
-      "team": "Iowa",
-      "rating": 17.3,
-      "ranking": 18,
-      "offense": {
-        "ranking": 38
-      },
-      "defense": {
-        "ranking": 9
-      }
-    },
-    {
-      "team": "Utah",
-      "rating": 17,
-      "ranking": 19,
-      "offense": {
-        "ranking": 15
-      },
-      "defense": {
-        "ranking": 22
+      "specialTeams": {
+        "ranking": 6
       }
     },
     {
       "team": "Ole Miss",
-      "rating": 15.6,
-      "ranking": 20,
+      "rating": 17.1,
+      "ranking": 14,
       "offense": {
-        "ranking": 11
+        "ranking": 4
       },
       "defense": {
-        "ranking": 39
-      }
-    },
-    {
-      "team": "Michigan",
-      "rating": 15.1,
-      "ranking": 21,
-      "offense": {
         "ranking": 42
       },
-      "defense": {
-        "ranking": 11
+      "specialTeams": {
+        "ranking": 3
       }
     },
     {
-      "team": "Missouri",
-      "rating": 15,
-      "ranking": 22,
+      "team": "Arizona",
+      "rating": 15.7,
+      "ranking": 15,
       "offense": {
-        "ranking": 35
+        "ranking": 14
       },
       "defense": {
-        "ranking": 13
+        "ranking": 27
+      },
+      "specialTeams": {
+        "ranking": 108
       }
     },
     {
       "team": "Nebraska",
-      "rating": 14.5,
-      "ranking": 23,
-      "offense": {
-        "ranking": 24
-      },
-      "defense": {
-        "ranking": 24
-      }
-    },
-    {
-      "team": "Kansas State",
-      "rating": 14.4,
-      "ranking": 24,
-      "offense": {
-        "ranking": 17
-      },
-      "defense": {
-        "ranking": 33
-      }
-    },
-    {
-      "team": "Louisville",
-      "rating": 13.3,
-      "ranking": 25,
-      "offense": {
-        "ranking": 19
-      },
-      "defense": {
-        "ranking": 40
-      }
-    },
-    {
-      "team": "South Carolina",
-      "rating": 13,
-      "ranking": 26,
-      "offense": {
-        "ranking": 34
-      },
-      "defense": {
-        "ranking": 25
-      }
-    },
-    {
-      "team": "Washington",
-      "rating": 12.8,
-      "ranking": 27,
-      "offense": {
-        "ranking": 43
-      },
-      "defense": {
-        "ranking": 17
-      }
-    },
-    {
-      "team": "Virginia Tech",
-      "rating": 12.4,
-      "ranking": 28,
-      "offense": {
-        "ranking": 22
-      },
-      "defense": {
-        "ranking": 38
-      }
-    },
-    {
-      "team": "SMU",
-      "rating": 12,
-      "ranking": 29,
-      "offense": {
-        "ranking": 21
-      },
-      "defense": {
-        "ranking": 41
-      }
-    },
-    {
-      "team": "Mississippi State",
-      "rating": 12,
-      "ranking": 30,
-      "offense": {
-        "ranking": 13
-      },
-      "defense": {
-        "ranking": 56
-      }
-    },
-    {
-      "team": "Auburn",
-      "rating": 11.6,
-      "ranking": 31,
-      "offense": {
-        "ranking": 51
-      },
-      "defense": {
-        "ranking": 20
-      }
-    },
-    {
-      "team": "TCU",
-      "rating": 11.2,
-      "ranking": 32,
+      "rating": 15.6,
+      "ranking": 16,
       "offense": {
         "ranking": 37
       },
       "defense": {
-        "ranking": 30
+        "ranking": 18
+      },
+      "specialTeams": {
+        "ranking": 101
       }
     },
     {
-      "team": "Illinois",
-      "rating": 11.1,
-      "ranking": 33,
+      "team": "USC",
+      "rating": 15.3,
+      "ranking": 17,
       "offense": {
-        "ranking": 23
+        "ranking": 7
       },
       "defense": {
-        "ranking": 52
+        "ranking": 45
+      },
+      "specialTeams": {
+        "ranking": 67
       }
     },
     {
       "team": "Houston",
-      "rating": 10.8,
-      "ranking": 34,
+      "rating": 14.3,
+      "ranking": 18,
       "offense": {
-        "ranking": 25
+        "ranking": 9
       },
       "defense": {
-        "ranking": 47
+        "ranking": 50
+      },
+      "specialTeams": {
+        "ranking": 58
+      }
+    },
+    {
+      "team": "UCLA",
+      "rating": 14,
+      "ranking": 19,
+      "offense": {
+        "ranking": 39
+      },
+      "defense": {
+        "ranking": 22
+      },
+      "specialTeams": {
+        "ranking": 85
+      }
+    },
+    {
+      "team": "Wake Forest",
+      "rating": 13.6,
+      "ranking": 20,
+      "offense": {
+        "ranking": 20
+      },
+      "defense": {
+        "ranking": 33
+      },
+      "specialTeams": {
+        "ranking": 7
+      }
+    },
+    {
+      "team": "Missouri",
+      "rating": 13.6,
+      "ranking": 21,
+      "offense": {
+        "ranking": 45
+      },
+      "defense": {
+        "ranking": 16
+      },
+      "specialTeams": {
+        "ranking": 68
+      }
+    },
+    {
+      "team": "Iowa",
+      "rating": 13.6,
+      "ranking": 22,
+      "offense": {
+        "ranking": 50
+      },
+      "defense": {
+        "ranking": 14
+      },
+      "specialTeams": {
+        "ranking": 11
+      }
+    },
+    {
+      "team": "Michigan",
+      "rating": 13,
+      "ranking": 23,
+      "offense": {
+        "ranking": 76
+      },
+      "defense": {
+        "ranking": 3
+      },
+      "specialTeams": {
+        "ranking": 79
+      }
+    },
+    {
+      "team": "Louisville",
+      "rating": 12.9,
+      "ranking": 24,
+      "offense": {
+        "ranking": 5
+      },
+      "defense": {
+        "ranking": 65
+      },
+      "specialTeams": {
+        "ranking": 86
+      }
+    },
+    {
+      "team": "SMU",
+      "rating": 12.9,
+      "ranking": 25,
+      "offense": {
+        "ranking": 31
+      },
+      "defense": {
+        "ranking": 28
+      },
+      "specialTeams": {
+        "ranking": 118
+      }
+    },
+    {
+      "team": "Northwestern",
+      "rating": 12.6,
+      "ranking": 26,
+      "offense": {
+        "ranking": 35
+      },
+      "defense": {
+        "ranking": 30
+      },
+      "specialTeams": {
+        "ranking": 46
+      }
+    },
+    {
+      "team": "Oklahoma State",
+      "rating": 12.1,
+      "ranking": 27,
+      "offense": {
+        "ranking": 16
+      },
+      "defense": {
+        "ranking": 46
+      },
+      "specialTeams": {
+        "ranking": 14
+      }
+    },
+    {
+      "team": "James Madison",
+      "rating": 12.1,
+      "ranking": 28,
+      "offense": {
+        "ranking": 32
+      },
+      "defense": {
+        "ranking": 34
+      },
+      "specialTeams": {
+        "ranking": 32
+      }
+    },
+    {
+      "team": "Kansas State",
+      "rating": 11.9,
+      "ranking": 29,
+      "offense": {
+        "ranking": 22
+      },
+      "defense": {
+        "ranking": 41
+      },
+      "specialTeams": {
+        "ranking": 45
+      }
+    },
+    {
+      "team": "New Mexico",
+      "rating": 10.6,
+      "ranking": 30,
+      "offense": {
+        "ranking": 57
+      },
+      "defense": {
+        "ranking": 21
+      },
+      "specialTeams": {
+        "ranking": 35
+      }
+    },
+    {
+      "team": "TCU",
+      "rating": 10.1,
+      "ranking": 31,
+      "offense": {
+        "ranking": 77
+      },
+      "defense": {
+        "ranking": 12
+      },
+      "specialTeams": {
+        "ranking": 93
+      }
+    },
+    {
+      "team": "South Carolina",
+      "rating": 10,
+      "ranking": 32,
+      "offense": {
+        "ranking": 29
+      },
+      "defense": {
+        "ranking": 49
+      },
+      "specialTeams": {
+        "ranking": 18
+      }
+    },
+    {
+      "team": "Texas A&M",
+      "rating": 9.9,
+      "ranking": 33,
+      "offense": {
+        "ranking": 46
+      },
+      "defense": {
+        "ranking": 31
+      },
+      "specialTeams": {
+        "ranking": 17
+      }
+    },
+    {
+      "team": "Oklahoma",
+      "rating": 9.8,
+      "ranking": 34,
+      "offense": {
+        "ranking": 96
+      },
+      "defense": {
+        "ranking": 6
+      },
+      "specialTeams": {
+        "ranking": 33
       }
     },
     {
       "team": "North Dakota State",
-      "rating": 10.6,
+      "rating": 9.5,
       "ranking": 35,
       "offense": {
-        "ranking": 49
+        "ranking": 79
       },
       "defense": {
+        "ranking": 19
+      },
+      "specialTeams": {
         "ranking": 26
       }
     },
     {
-      "team": "Virginia",
-      "rating": 10.5,
+      "team": "Pittsburgh",
+      "rating": 9.4,
       "ranking": 36,
       "offense": {
         "ranking": 52
       },
       "defense": {
-        "ranking": 23
-      }
-    },
-    {
-      "team": "Pittsburgh",
-      "rating": 10.4,
-      "ranking": 37,
-      "offense": {
-        "ranking": 40
-      },
-      "defense": {
-        "ranking": 36
-      }
-    },
-    {
-      "team": "Arizona",
-      "rating": 9.8,
-      "ranking": 38,
-      "offense": {
-        "ranking": 32
-      },
-      "defense": {
-        "ranking": 42
-      }
-    },
-    {
-      "team": "Vanderbilt",
-      "rating": 9.7,
-      "ranking": 39,
-      "offense": {
-        "ranking": 28
-      },
-      "defense": {
-        "ranking": 57
-      }
-    },
-    {
-      "team": "UCLA",
-      "rating": 9,
-      "ranking": 40,
-      "offense": {
         "ranking": 29
       },
-      "defense": {
-        "ranking": 54
-      }
-    },
-    {
-      "team": "Oklahoma State",
-      "rating": 8.7,
-      "ranking": 41,
-      "offense": {
-        "ranking": 45
-      },
-      "defense": {
-        "ranking": 48
-      }
-    },
-    {
-      "team": "Cincinnati",
-      "rating": 8,
-      "ranking": 42,
-      "offense": {
-        "ranking": 30
-      },
-      "defense": {
-        "ranking": 62
-      }
-    },
-    {
-      "team": "Maryland",
-      "rating": 7.9,
-      "ranking": 43,
-      "offense": {
-        "ranking": 50
-      },
-      "defense": {
-        "ranking": 45
-      }
-    },
-    {
-      "team": "Northwestern",
-      "rating": 7.7,
-      "ranking": 44,
-      "offense": {
-        "ranking": 63
-      },
-      "defense": {
-        "ranking": 28
-      }
-    },
-    {
-      "team": "Clemson",
-      "rating": 7.1,
-      "ranking": 45,
-      "offense": {
-        "ranking": 74
-      },
-      "defense": {
-        "ranking": 27
-      }
-    },
-    {
-      "team": "Duke",
-      "rating": 7,
-      "ranking": 46,
-      "offense": {
-        "ranking": 31
-      },
-      "defense": {
-        "ranking": 64
+      "specialTeams": {
+        "ranking": 61
       }
     },
     {
       "team": "Boise State",
-      "rating": 6.9,
-      "ranking": 47,
+      "rating": 9.4,
+      "ranking": 37,
       "offense": {
-        "ranking": 39
-      },
-      "defense": {
-        "ranking": 59
-      }
-    },
-    {
-      "team": "Baylor",
-      "rating": 6.8,
-      "ranking": 48,
-      "offense": {
-        "ranking": 36
-      },
-      "defense": {
-        "ranking": 66
-      }
-    },
-    {
-      "team": "Kentucky",
-      "rating": 6.5,
-      "ranking": 49,
-      "offense": {
-        "ranking": 57
-      },
-      "defense": {
-        "ranking": 44
-      }
-    },
-    {
-      "team": "James Madison",
-      "rating": 6.2,
-      "ranking": 50,
-      "offense": {
-        "ranking": 55
-      },
-      "defense": {
-        "ranking": 49
-      }
-    },
-    {
-      "team": "Minnesota",
-      "rating": 5.9,
-      "ranking": 51,
-      "offense": {
-        "ranking": 69
-      },
-      "defense": {
-        "ranking": 31
-      }
-    },
-    {
-      "team": "Iowa State",
-      "rating": 5.8,
-      "ranking": 52,
-      "offense": {
-        "ranking": 81
-      },
-      "defense": {
-        "ranking": 29
-      }
-    },
-    {
-      "team": "Florida State",
-      "rating": 5.5,
-      "ranking": 53,
-      "offense": {
-        "ranking": 46
+        "ranking": 21
       },
       "defense": {
         "ranking": 61
-      }
-    },
-    {
-      "team": "UCF",
-      "rating": 5.5,
-      "ranking": 54,
-      "offense": {
-        "ranking": 77
       },
-      "defense": {
-        "ranking": 32
+      "specialTeams": {
+        "ranking": 57
       }
     },
     {
-      "team": "Arizona State",
-      "rating": 5.3,
-      "ranking": 55,
-      "offense": {
-        "ranking": 60
-      },
-      "defense": {
-        "ranking": 43
-      }
-    },
-    {
-      "team": "Wisconsin",
-      "rating": 5.1,
-      "ranking": 56,
-      "offense": {
-        "ranking": 91
-      },
-      "defense": {
-        "ranking": 21
-      }
-    },
-    {
-      "team": "NC State",
-      "rating": 5,
-      "ranking": 57,
-      "offense": {
-        "ranking": 41
-      },
-      "defense": {
-        "ranking": 71
-      }
-    },
-    {
-      "team": "New Mexico",
-      "rating": 4.8,
-      "ranking": 58,
-      "offense": {
-        "ranking": 66
-      },
-      "defense": {
-        "ranking": 50
-      }
-    },
-    {
-      "team": "North Carolina",
-      "rating": 4.5,
-      "ranking": 59,
-      "offense": {
-        "ranking": 83
-      },
-      "defense": {
-        "ranking": 37
-      }
-    },
-    {
-      "team": "Georgia Tech",
-      "rating": 4.4,
-      "ranking": 60,
-      "offense": {
-        "ranking": 58
-      },
-      "defense": {
-        "ranking": 58
-      }
-    },
-    {
-      "team": "West Virginia",
-      "rating": 3.8,
-      "ranking": 61,
-      "offense": {
-        "ranking": 53
-      },
-      "defense": {
-        "ranking": 67
-      }
-    },
-    {
-      "team": "Memphis",
-      "rating": 3.7,
-      "ranking": 62,
+      "team": "Florida",
+      "rating": 9.2,
+      "ranking": 38,
       "offense": {
         "ranking": 27
       },
       "defense": {
-        "ranking": 96
-      }
-    },
-    {
-      "team": "Wake Forest",
-      "rating": 3.6,
-      "ranking": 63,
-      "offense": {
-        "ranking": 72
-      },
-      "defense": {
-        "ranking": 51
-      }
-    },
-    {
-      "team": "Kansas",
-      "rating": 3,
-      "ranking": 64,
-      "offense": {
         "ranking": 62
       },
-      "defense": {
-        "ranking": 63
-      }
-    },
-    {
-      "team": "Michigan State",
-      "rating": 2.3,
-      "ranking": 65,
-      "offense": {
-        "ranking": 64
-      },
-      "defense": {
-        "ranking": 60
-      }
-    },
-    {
-      "team": "South Florida",
-      "rating": 1.9,
-      "ranking": 66,
-      "offense": {
-        "ranking": 47
-      },
-      "defense": {
-        "ranking": 83
-      }
-    },
-    {
-      "team": "California",
-      "rating": 0.8,
-      "ranking": 67,
-      "offense": {
-        "ranking": 59
-      },
-      "defense": {
-        "ranking": 74
-      }
-    },
-    {
-      "team": "Army",
-      "rating": 0.2,
-      "ranking": 68,
-      "offense": {
-        "ranking": 71
-      },
-      "defense": {
-        "ranking": 73
-      }
-    },
-    {
-      "team": "Syracuse",
-      "rating": -0.2,
-      "ranking": 69,
-      "offense": {
-        "ranking": 92
-      },
-      "defense": {
-        "ranking": 55
-      }
-    },
-    {
-      "team": "Arkansas",
-      "rating": -0.3,
-      "ranking": 70,
-      "offense": {
-        "ranking": 44
-      },
-      "defense": {
-        "ranking": 105
-      }
-    },
-    {
-      "team": "Fresno State",
-      "rating": -0.4,
-      "ranking": 71,
-      "offense": {
-        "ranking": 104
-      },
-      "defense": {
-        "ranking": 46
-      }
-    },
-    {
-      "team": "Colorado",
-      "rating": -1.2,
-      "ranking": 72,
-      "offense": {
-        "ranking": 84
-      },
-      "defense": {
-        "ranking": 72
-      }
-    },
-    {
-      "team": "Tulsa",
-      "rating": -1.2,
-      "ranking": 73,
-      "offense": {
-        "ranking": 82
-      },
-      "defense": {
-        "ranking": 75
-      }
-    },
-    {
-      "team": "UTSA",
-      "rating": -1.4,
-      "ranking": 74,
-      "offense": {
-        "ranking": 56
-      },
-      "defense": {
-        "ranking": 99
-      }
-    },
-    {
-      "team": "Purdue",
-      "rating": -2.1,
-      "ranking": 75,
-      "offense": {
-        "ranking": 61
-      },
-      "defense": {
-        "ranking": 97
-      }
-    },
-    {
-      "team": "Navy",
-      "rating": -2.3,
-      "ranking": 76,
-      "offense": {
-        "ranking": 67
-      },
-      "defense": {
-        "ranking": 90
-      }
-    },
-    {
-      "team": "Rutgers",
-      "rating": -2.4,
-      "ranking": 77,
-      "offense": {
-        "ranking": 54
-      },
-      "defense": {
-        "ranking": 107
-      }
-    },
-    {
-      "team": "San Diego State",
-      "rating": -2.5,
-      "ranking": 78,
-      "offense": {
-        "ranking": 98
-      },
-      "defense": {
-        "ranking": 68
+      "specialTeams": {
+        "ranking": 1
       }
     },
     {
       "team": "Oregon State",
-      "rating": -2.5,
-      "ranking": 79,
+      "rating": 9.1,
+      "ranking": 39,
       "offense": {
-        "ranking": 88
+        "ranking": 24
       },
       "defense": {
-        "ranking": 70
-      }
-    },
-    {
-      "team": "Western Michigan",
-      "rating": -2.6,
-      "ranking": 80,
-      "offense": {
-        "ranking": 105
+        "ranking": 55
       },
-      "defense": {
-        "ranking": 53
-      }
-    },
-    {
-      "team": "Air Force",
-      "rating": -2.8,
-      "ranking": 81,
-      "offense": {
-        "ranking": 80
-      },
-      "defense": {
-        "ranking": 85
-      }
-    },
-    {
-      "team": "Liberty",
-      "rating": -3,
-      "ranking": 82,
-      "offense": {
-        "ranking": 76
-      },
-      "defense": {
-        "ranking": 88
-      }
-    },
-    {
-      "team": "Jacksonville State",
-      "rating": -3.2,
-      "ranking": 83,
-      "offense": {
-        "ranking": 65
-      },
-      "defense": {
-        "ranking": 93
-      }
-    },
-    {
-      "team": "UNLV",
-      "rating": -3.3,
-      "ranking": 84,
-      "offense": {
-        "ranking": 70
-      },
-      "defense": {
-        "ranking": 95
-      }
-    },
-    {
-      "team": "Boston College",
-      "rating": -4.9,
-      "ranking": 85,
-      "offense": {
-        "ranking": 95
-      },
-      "defense": {
-        "ranking": 82
-      }
-    },
-    {
-      "team": "UConn",
-      "rating": -5.2,
-      "ranking": 86,
-      "offense": {
-        "ranking": 87
-      },
-      "defense": {
-        "ranking": 94
-      }
-    },
-    {
-      "team": "Toledo",
-      "rating": -5.4,
-      "ranking": 87,
-      "offense": {
-        "ranking": 101
-      },
-      "defense": {
-        "ranking": 76
-      }
-    },
-    {
-      "team": "Tulane",
-      "rating": -5.6,
-      "ranking": 88,
-      "offense": {
-        "ranking": 103
-      },
-      "defense": {
-        "ranking": 79
-      }
-    },
-    {
-      "team": "Washington State",
-      "rating": -5.6,
-      "ranking": 89,
-      "offense": {
-        "ranking": 112
-      },
-      "defense": {
-        "ranking": 65
-      }
-    },
-    {
-      "team": "East Carolina",
-      "rating": -5.6,
-      "ranking": 90,
-      "offense": {
-        "ranking": 100
-      },
-      "defense": {
-        "ranking": 78
-      }
-    },
-    {
-      "team": "Texas State",
-      "rating": -5.9,
-      "ranking": 91,
-      "offense": {
-        "ranking": 33
-      },
-      "defense": {
-        "ranking": 133
-      }
-    },
-    {
-      "team": "Miami (OH)",
-      "rating": -6,
-      "ranking": 92,
-      "offense": {
-        "ranking": 106
-      },
-      "defense": {
-        "ranking": 77
-      }
-    },
-    {
-      "team": "Troy",
-      "rating": -6.2,
-      "ranking": 93,
-      "offense": {
-        "ranking": 97
-      },
-      "defense": {
-        "ranking": 87
-      }
-    },
-    {
-      "team": "App State",
-      "rating": -6.3,
-      "ranking": 94,
-      "offense": {
-        "ranking": 90
-      },
-      "defense": {
-        "ranking": 98
-      }
-    },
-    {
-      "team": "Temple",
-      "rating": -6.5,
-      "ranking": 95,
-      "offense": {
-        "ranking": 68
-      },
-      "defense": {
-        "ranking": 115
-      }
-    },
-    {
-      "team": "Colorado State",
-      "rating": -6.6,
-      "ranking": 96,
-      "offense": {
-        "ranking": 102
-      },
-      "defense": {
-        "ranking": 84
-      }
-    },
-    {
-      "team": "Old Dominion",
-      "rating": -7,
-      "ranking": 97,
-      "offense": {
-        "ranking": 115
-      },
-      "defense": {
-        "ranking": 69
-      }
-    },
-    {
-      "team": "Hawai'i",
-      "rating": -7.1,
-      "ranking": 98,
-      "offense": {
-        "ranking": 93
-      },
-      "defense": {
-        "ranking": 102
-      }
-    },
-    {
-      "team": "Louisiana",
-      "rating": -7.2,
-      "ranking": 99,
-      "offense": {
-        "ranking": 79
-      },
-      "defense": {
-        "ranking": 111
-      }
-    },
-    {
-      "team": "Florida Atlantic",
-      "rating": -7.4,
-      "ranking": 100,
-      "offense": {
-        "ranking": 73
-      },
-      "defense": {
-        "ranking": 119
-      }
-    },
-    {
-      "team": "Stanford",
-      "rating": -7.4,
-      "ranking": 101,
-      "offense": {
-        "ranking": 107
-      },
-      "defense": {
-        "ranking": 80
-      }
-    },
-    {
-      "team": "Georgia Southern",
-      "rating": -7.7,
-      "ranking": 102,
-      "offense": {
-        "ranking": 96
-      },
-      "defense": {
-        "ranking": 101
-      }
-    },
-    {
-      "team": "Delaware",
-      "rating": -8.1,
-      "ranking": 103,
-      "offense": {
-        "ranking": 85
-      },
-      "defense": {
-        "ranking": 110
-      }
-    },
-    {
-      "team": "Louisiana Tech",
-      "rating": -8.2,
-      "ranking": 104,
-      "offense": {
-        "ranking": 99
-      },
-      "defense": {
-        "ranking": 100
-      }
-    },
-    {
-      "team": "North Texas",
-      "rating": -9.2,
-      "ranking": 105,
-      "offense": {
-        "ranking": 75
-      },
-      "defense": {
+      "specialTeams": {
         "ranking": 125
       }
     },
     {
-      "team": "Utah State",
-      "rating": -9.3,
-      "ranking": 106,
+      "team": "Virginia Tech",
+      "rating": 8.9,
+      "ranking": 40,
       "offense": {
-        "ranking": 108
+        "ranking": 36
       },
       "defense": {
-        "ranking": 92
-      }
-    },
-    {
-      "team": "Arkansas State",
-      "rating": -9.5,
-      "ranking": 107,
-      "offense": {
-        "ranking": 89
+        "ranking": 43
       },
-      "defense": {
-        "ranking": 113
-      }
-    },
-    {
-      "team": "Nevada",
-      "rating": -9.6,
-      "ranking": 108,
-      "offense": {
-        "ranking": 117
-      },
-      "defense": {
-        "ranking": 86
-      }
-    },
-    {
-      "team": "Coastal Carolina",
-      "rating": -10.2,
-      "ranking": 109,
-      "offense": {
-        "ranking": 94
-      },
-      "defense": {
+      "specialTeams": {
         "ranking": 112
       }
     },
     {
-      "team": "Marshall",
-      "rating": -11,
-      "ranking": 110,
+      "team": "Baylor",
+      "rating": 8.9,
+      "ranking": 41,
+      "offense": {
+        "ranking": 61
+      },
+      "defense": {
+        "ranking": 26
+      },
+      "specialTeams": {
+        "ranking": 15
+      }
+    },
+    {
+      "team": "Auburn",
+      "rating": 8.9,
+      "ranking": 42,
+      "offense": {
+        "ranking": 67
+      },
+      "defense": {
+        "ranking": 24
+      },
+      "specialTeams": {
+        "ranking": 36
+      }
+    },
+    {
+      "team": "Wisconsin",
+      "rating": 8.3,
+      "ranking": 43,
+      "offense": {
+        "ranking": 94
+      },
+      "defense": {
+        "ranking": 11
+      },
+      "specialTeams": {
+        "ranking": 59
+      }
+    },
+    {
+      "team": "Washington",
+      "rating": 8.2,
+      "ranking": 44,
+      "offense": {
+        "ranking": 47
+      },
+      "defense": {
+        "ranking": 36
+      },
+      "specialTeams": {
+        "ranking": 78
+      }
+    },
+    {
+      "team": "Kentucky",
+      "rating": 7.8,
+      "ranking": 45,
+      "offense": {
+        "ranking": 40
+      },
+      "defense": {
+        "ranking": 53
+      },
+      "specialTeams": {
+        "ranking": 120
+      }
+    },
+    {
+      "team": "Liberty",
+      "rating": 7.5,
+      "ranking": 46,
+      "offense": {
+        "ranking": 53
+      },
+      "defense": {
+        "ranking": 37
+      },
+      "specialTeams": {
+        "ranking": 82
+      }
+    },
+    {
+      "team": "Penn State",
+      "rating": 7.3,
+      "ranking": 47,
+      "offense": {
+        "ranking": 62
+      },
+      "defense": {
+        "ranking": 32
+      },
+      "specialTeams": {
+        "ranking": 63
+      }
+    },
+    {
+      "team": "Mississippi State",
+      "rating": 7.3,
+      "ranking": 48,
+      "offense": {
+        "ranking": 26
+      },
+      "defense": {
+        "ranking": 77
+      },
+      "specialTeams": {
+        "ranking": 16
+      }
+    },
+    {
+      "team": "Virginia",
+      "rating": 6.6,
+      "ranking": 49,
+      "offense": {
+        "ranking": 60
+      },
+      "defense": {
+        "ranking": 38
+      },
+      "specialTeams": {
+        "ranking": 42
+      }
+    },
+    {
+      "team": "Duke",
+      "rating": 6.5,
+      "ranking": 50,
+      "offense": {
+        "ranking": 44
+      },
+      "defense": {
+        "ranking": 51
+      },
+      "specialTeams": {
+        "ranking": 73
+      }
+    },
+    {
+      "team": "Memphis",
+      "rating": 6.5,
+      "ranking": 51,
+      "offense": {
+        "ranking": 33
+      },
+      "defense": {
+        "ranking": 72
+      },
+      "specialTeams": {
+        "ranking": 87
+      }
+    },
+    {
+      "team": "Illinois",
+      "rating": 6,
+      "ranking": 52,
+      "offense": {
+        "ranking": 30
+      },
+      "defense": {
+        "ranking": 82
+      },
+      "specialTeams": {
+        "ranking": 13
+      }
+    },
+    {
+      "team": "Cincinnati",
+      "rating": 5.2,
+      "ranking": 53,
+      "offense": {
+        "ranking": 28
+      },
+      "defense": {
+        "ranking": 92
+      },
+      "specialTeams": {
+        "ranking": 52
+      }
+    },
+    {
+      "team": "North Carolina",
+      "rating": 5,
+      "ranking": 54,
+      "offense": {
+        "ranking": 75
+      },
+      "defense": {
+        "ranking": 35
+      },
+      "specialTeams": {
+        "ranking": 88
+      }
+    },
+    {
+      "team": "Florida State",
+      "rating": 4.9,
+      "ranking": 55,
+      "offense": {
+        "ranking": 34
+      },
+      "defense": {
+        "ranking": 91
+      },
+      "specialTeams": {
+        "ranking": 19
+      }
+    },
+    {
+      "team": "Clemson",
+      "rating": 4,
+      "ranking": 56,
+      "offense": {
+        "ranking": 98
+      },
+      "defense": {
+        "ranking": 25
+      },
+      "specialTeams": {
+        "ranking": 20
+      }
+    },
+    {
+      "team": "UCF",
+      "rating": 4,
+      "ranking": 57,
+      "offense": {
+        "ranking": 81
+      },
+      "defense": {
+        "ranking": 40
+      },
+      "specialTeams": {
+        "ranking": 65
+      }
+    },
+    {
+      "team": "Kansas",
+      "rating": 3.5,
+      "ranking": 58,
+      "offense": {
+        "ranking": 63
+      },
+      "defense": {
+        "ranking": 60
+      },
+      "specialTeams": {
+        "ranking": 51
+      }
+    },
+    {
+      "team": "Fresno State",
+      "rating": 3.4,
+      "ranking": 59,
+      "offense": {
+        "ranking": 74
+      },
+      "defense": {
+        "ranking": 47
+      },
+      "specialTeams": {
+        "ranking": 10
+      }
+    },
+    {
+      "team": "Minnesota",
+      "rating": 3.1,
+      "ranking": 60,
+      "offense": {
+        "ranking": 85
+      },
+      "defense": {
+        "ranking": 39
+      },
+      "specialTeams": {
+        "ranking": 77
+      }
+    },
+    {
+      "team": "South Florida",
+      "rating": 2.7,
+      "ranking": 61,
+      "offense": {
+        "ranking": 71
+      },
+      "defense": {
+        "ranking": 56
+      },
+      "specialTeams": {
+        "ranking": 40
+      }
+    },
+    {
+      "team": "Texas State",
+      "rating": 2.5,
+      "ranking": 62,
+      "offense": {
+        "ranking": 15
+      },
+      "defense": {
+        "ranking": 118
+      },
+      "specialTeams": {
+        "ranking": 105
+      }
+    },
+    {
+      "team": "Louisiana",
+      "rating": 1.9,
+      "ranking": 63,
+      "offense": {
+        "ranking": 66
+      },
+      "defense": {
+        "ranking": 64
+      },
+      "specialTeams": {
+        "ranking": 89
+      }
+    },
+    {
+      "team": "Georgia Tech",
+      "rating": 1.9,
+      "ranking": 64,
+      "offense": {
+        "ranking": 55
+      },
+      "defense": {
+        "ranking": 79
+      },
+      "specialTeams": {
+        "ranking": 54
+      }
+    },
+    {
+      "team": "Toledo",
+      "rating": 1.8,
+      "ranking": 65,
       "offense": {
         "ranking": 78
       },
       "defense": {
-        "ranking": 130
+        "ranking": 54
+      },
+      "specialTeams": {
+        "ranking": 115
       }
     },
     {
-      "team": "South Alabama",
-      "rating": -12.1,
-      "ranking": 111,
+      "team": "Air Force",
+      "rating": 1.5,
+      "ranking": 66,
+      "offense": {
+        "ranking": 59
+      },
+      "defense": {
+        "ranking": 75
+      },
+      "specialTeams": {
+        "ranking": 62
+      }
+    },
+    {
+      "team": "Army",
+      "rating": 1.2,
+      "ranking": 67,
+      "offense": {
+        "ranking": 43
+      },
+      "defense": {
+        "ranking": 97
+      },
+      "specialTeams": {
+        "ranking": 66
+      }
+    },
+    {
+      "team": "Iowa State",
+      "rating": 1,
+      "ranking": 68,
+      "offense": {
+        "ranking": 83
+      },
+      "defense": {
+        "ranking": 59
+      },
+      "specialTeams": {
+        "ranking": 34
+      }
+    },
+    {
+      "team": "UTSA",
+      "rating": 0.7,
+      "ranking": 69,
+      "offense": {
+        "ranking": 48
+      },
+      "defense": {
+        "ranking": 96
+      },
+      "specialTeams": {
+        "ranking": 72
+      }
+    },
+    {
+      "team": "Arizona State",
+      "rating": 0.6,
+      "ranking": 70,
+      "offense": {
+        "ranking": 69
+      },
+      "defense": {
+        "ranking": 70
+      },
+      "specialTeams": {
+        "ranking": 104
+      }
+    },
+    {
+      "team": "Vanderbilt",
+      "rating": 0.3,
+      "ranking": 71,
+      "offense": {
+        "ranking": 64
+      },
+      "defense": {
+        "ranking": 86
+      },
+      "specialTeams": {
+        "ranking": 9
+      }
+    },
+    {
+      "team": "Navy",
+      "rating": 0.2,
+      "ranking": 72,
+      "offense": {
+        "ranking": 58
+      },
+      "defense": {
+        "ranking": 88
+      },
+      "specialTeams": {
+        "ranking": 83
+      }
+    },
+    {
+      "team": "Purdue",
+      "rating": -0.1,
+      "ranking": 73,
+      "offense": {
+        "ranking": 41
+      },
+      "defense": {
+        "ranking": 113
+      },
+      "specialTeams": {
+        "ranking": 4
+      }
+    },
+    {
+      "team": "UConn",
+      "rating": -0.3,
+      "ranking": 74,
+      "offense": {
+        "ranking": 49
+      },
+      "defense": {
+        "ranking": 103
+      },
+      "specialTeams": {
+        "ranking": 53
+      }
+    },
+    {
+      "team": "Jacksonville State",
+      "rating": -0.5,
+      "ranking": 75,
+      "offense": {
+        "ranking": 68
+      },
+      "defense": {
+        "ranking": 83
+      },
+      "specialTeams": {
+        "ranking": 81
+      }
+    },
+    {
+      "team": "West Virginia",
+      "rating": -0.8,
+      "ranking": 76,
+      "offense": {
+        "ranking": 23
+      },
+      "defense": {
+        "ranking": 126
+      },
+      "specialTeams": {
+        "ranking": 55
+      }
+    },
+    {
+      "team": "North Texas",
+      "rating": -0.9,
+      "ranking": 77,
+      "offense": {
+        "ranking": 38
+      },
+      "defense": {
+        "ranking": 117
+      },
+      "specialTeams": {
+        "ranking": 111
+      }
+    },
+    {
+      "team": "NC State",
+      "rating": -1,
+      "ranking": 78,
+      "offense": {
+        "ranking": 51
+      },
+      "defense": {
+        "ranking": 104
+      },
+      "specialTeams": {
+        "ranking": 76
+      }
+    },
+    {
+      "team": "Michigan State",
+      "rating": -1.1,
+      "ranking": 79,
+      "offense": {
+        "ranking": 91
+      },
+      "defense": {
+        "ranking": 68
+      },
+      "specialTeams": {
+        "ranking": 21
+      }
+    },
+    {
+      "team": "Colorado",
+      "rating": -1.3,
+      "ranking": 80,
+      "offense": {
+        "ranking": 99
+      },
+      "defense": {
+        "ranking": 48
+      },
+      "specialTeams": {
+        "ranking": 128
+      }
+    },
+    {
+      "team": "Western Michigan",
+      "rating": -1.5,
+      "ranking": 81,
+      "offense": {
+        "ranking": 101
+      },
+      "defense": {
+        "ranking": 44
+      },
+      "specialTeams": {
+        "ranking": 30
+      }
+    },
+    {
+      "team": "Arkansas",
+      "rating": -1.7,
+      "ranking": 82,
+      "offense": {
+        "ranking": 73
+      },
+      "defense": {
+        "ranking": 94
+      },
+      "specialTeams": {
+        "ranking": 31
+      }
+    },
+    {
+      "team": "Ohio",
+      "rating": -2,
+      "ranking": 83,
+      "offense": {
+        "ranking": 92
+      },
+      "defense": {
+        "ranking": 69
+      },
+      "specialTeams": {
+        "ranking": 94
+      }
+    },
+    {
+      "team": "Syracuse",
+      "rating": -2.3,
+      "ranking": 84,
+      "offense": {
+        "ranking": 87
+      },
+      "defense": {
+        "ranking": 78
+      },
+      "specialTeams": {
+        "ranking": 90
+      }
+    },
+    {
+      "team": "Georgia Southern",
+      "rating": -2.5,
+      "ranking": 85,
+      "offense": {
+        "ranking": 82
+      },
+      "defense": {
+        "ranking": 85
+      },
+      "specialTeams": {
+        "ranking": 131
+      }
+    },
+    {
+      "team": "Florida Atlantic",
+      "rating": -2.6,
+      "ranking": 86,
+      "offense": {
+        "ranking": 54
+      },
+      "defense": {
+        "ranking": 114
+      },
+      "specialTeams": {
+        "ranking": 38
+      }
+    },
+    {
+      "team": "Tulsa",
+      "rating": -2.7,
+      "ranking": 87,
       "offense": {
         "ranking": 86
       },
       "defense": {
-        "ranking": 127
+        "ranking": 84
+      },
+      "specialTeams": {
+        "ranking": 92
+      }
+    },
+    {
+      "team": "Maryland",
+      "rating": -2.9,
+      "ranking": 88,
+      "offense": {
+        "ranking": 70
+      },
+      "defense": {
+        "ranking": 102
+      },
+      "specialTeams": {
+        "ranking": 69
+      }
+    },
+    {
+      "team": "Boston College",
+      "rating": -3.2,
+      "ranking": 89,
+      "offense": {
+        "ranking": 102
+      },
+      "defense": {
+        "ranking": 57
+      },
+      "specialTeams": {
+        "ranking": 71
+      }
+    },
+    {
+      "team": "UNLV",
+      "rating": -3.4,
+      "ranking": 90,
+      "offense": {
+        "ranking": 90
+      },
+      "defense": {
+        "ranking": 87
+      },
+      "specialTeams": {
+        "ranking": 95
+      }
+    },
+    {
+      "team": "Rutgers",
+      "rating": -3.8,
+      "ranking": 91,
+      "offense": {
+        "ranking": 42
+      },
+      "defense": {
+        "ranking": 125
+      },
+      "specialTeams": {
+        "ranking": 37
+      }
+    },
+    {
+      "team": "East Carolina",
+      "rating": -3.8,
+      "ranking": 92,
+      "offense": {
+        "ranking": 105
+      },
+      "defense": {
+        "ranking": 58
+      },
+      "specialTeams": {
+        "ranking": 99
+      }
+    },
+    {
+      "team": "Louisiana Tech",
+      "rating": -3.8,
+      "ranking": 93,
+      "offense": {
+        "ranking": 88
+      },
+      "defense": {
+        "ranking": 93
+      },
+      "specialTeams": {
+        "ranking": 103
+      }
+    },
+    {
+      "team": "Miami (OH)",
+      "rating": -4,
+      "ranking": 94,
+      "offense": {
+        "ranking": 97
+      },
+      "defense": {
+        "ranking": 81
+      },
+      "specialTeams": {
+        "ranking": 91
+      }
+    },
+    {
+      "team": "Nevada",
+      "rating": -4.6,
+      "ranking": 95,
+      "offense": {
+        "ranking": 107
+      },
+      "defense": {
+        "ranking": 63
+      },
+      "specialTeams": {
+        "ranking": 12
+      }
+    },
+    {
+      "team": "App State",
+      "rating": -5.3,
+      "ranking": 96,
+      "offense": {
+        "ranking": 95
+      },
+      "defense": {
+        "ranking": 98
+      },
+      "specialTeams": {
+        "ranking": 39
       }
     },
     {
       "team": "Florida International",
-      "rating": -12.3,
+      "rating": -6.2,
+      "ranking": 97,
+      "offense": {
+        "ranking": 119
+      },
+      "defense": {
+        "ranking": 52
+      },
+      "specialTeams": {
+        "ranking": 75
+      }
+    },
+    {
+      "team": "California",
+      "rating": -6.2,
+      "ranking": 98,
+      "offense": {
+        "ranking": 100
+      },
+      "defense": {
+        "ranking": 89
+      },
+      "specialTeams": {
+        "ranking": 135
+      }
+    },
+    {
+      "team": "Massachusetts",
+      "rating": -6.5,
+      "ranking": 99,
+      "offense": {
+        "ranking": 109
+      },
+      "defense": {
+        "ranking": 76
+      },
+      "specialTeams": {
+        "ranking": 70
+      }
+    },
+    {
+      "team": "Arkansas State",
+      "rating": -6.7,
+      "ranking": 100,
+      "offense": {
+        "ranking": 84
+      },
+      "defense": {
+        "ranking": 112
+      },
+      "specialTeams": {
+        "ranking": 102
+      }
+    },
+    {
+      "team": "Tulane",
+      "rating": -6.7,
+      "ranking": 101,
+      "offense": {
+        "ranking": 113
+      },
+      "defense": {
+        "ranking": 74
+      },
+      "specialTeams": {
+        "ranking": 28
+      }
+    },
+    {
+      "team": "Temple",
+      "rating": -6.9,
+      "ranking": 102,
+      "offense": {
+        "ranking": 80
+      },
+      "defense": {
+        "ranking": 119
+      },
+      "specialTeams": {
+        "ranking": 64
+      }
+    },
+    {
+      "team": "Georgia State",
+      "rating": -7.6,
+      "ranking": 103,
+      "offense": {
+        "ranking": 72
+      },
+      "defense": {
+        "ranking": 123
+      },
+      "specialTeams": {
+        "ranking": 97
+      }
+    },
+    {
+      "team": "San Diego State",
+      "rating": -8.7,
+      "ranking": 104,
+      "offense": {
+        "ranking": 108
+      },
+      "defense": {
+        "ranking": 99
+      },
+      "specialTeams": {
+        "ranking": 2
+      }
+    },
+    {
+      "team": "Coastal Carolina",
+      "rating": -8.9,
+      "ranking": 105,
+      "offense": {
+        "ranking": 89
+      },
+      "defense": {
+        "ranking": 122
+      },
+      "specialTeams": {
+        "ranking": 48
+      }
+    },
+    {
+      "team": "UAB",
+      "rating": -8.9,
+      "ranking": 106,
+      "offense": {
+        "ranking": 111
+      },
+      "defense": {
+        "ranking": 95
+      },
+      "specialTeams": {
+        "ranking": 47
+      }
+    },
+    {
+      "team": "Troy",
+      "rating": -9,
+      "ranking": 107,
+      "offense": {
+        "ranking": 104
+      },
+      "defense": {
+        "ranking": 101
+      },
+      "specialTeams": {
+        "ranking": 96
+      }
+    },
+    {
+      "team": "Utah State",
+      "rating": -9,
+      "ranking": 108,
+      "offense": {
+        "ranking": 120
+      },
+      "defense": {
+        "ranking": 66
+      },
+      "specialTeams": {
+        "ranking": 119
+      }
+    },
+    {
+      "team": "Wyoming",
+      "rating": -9.3,
+      "ranking": 109,
+      "offense": {
+        "ranking": 126
+      },
+      "defense": {
+        "ranking": 67
+      },
+      "specialTeams": {
+        "ranking": 44
+      }
+    },
+    {
+      "team": "San José State",
+      "rating": -9.3,
+      "ranking": 110,
+      "offense": {
+        "ranking": 117
+      },
+      "defense": {
+        "ranking": 73
+      },
+      "specialTeams": {
+        "ranking": 129
+      }
+    },
+    {
+      "team": "Colorado State",
+      "rating": -9.6,
+      "ranking": 111,
+      "offense": {
+        "ranking": 65
+      },
+      "defense": {
+        "ranking": 133
+      },
+      "specialTeams": {
+        "ranking": 80
+      }
+    },
+    {
+      "team": "Kennesaw State",
+      "rating": -10.8,
       "ranking": 112,
+      "offense": {
+        "ranking": 110
+      },
+      "defense": {
+        "ranking": 105
+      },
+      "specialTeams": {
+        "ranking": 122
+      }
+    },
+    {
+      "team": "Stanford",
+      "rating": -11.2,
+      "ranking": 113,
+      "offense": {
+        "ranking": 106
+      },
+      "defense": {
+        "ranking": 111
+      },
+      "specialTeams": {
+        "ranking": 127
+      }
+    },
+    {
+      "team": "Old Dominion",
+      "rating": -11.2,
+      "ranking": 114,
+      "offense": {
+        "ranking": 128
+      },
+      "defense": {
+        "ranking": 71
+      },
+      "specialTeams": {
+        "ranking": 132
+      }
+    },
+    {
+      "team": "Western Kentucky",
+      "rating": -11.2,
+      "ranking": 115,
       "offense": {
         "ranking": 114
       },
       "defense": {
         "ranking": 106
+      },
+      "specialTeams": {
+        "ranking": 8
       }
     },
     {
-      "team": "Kennesaw State",
-      "rating": -12.5,
-      "ranking": 113,
+      "team": "South Alabama",
+      "rating": -11.2,
+      "ranking": 116,
       "offense": {
-        "ranking": 111
+        "ranking": 56
       },
       "defense": {
-        "ranking": 108
+        "ranking": 136
+      },
+      "specialTeams": {
+        "ranking": 116
       }
     },
     {
-      "team": "Ohio",
-      "rating": -12.7,
-      "ranking": 114,
+      "team": "Washington State",
+      "rating": -12.1,
+      "ranking": 117,
       "offense": {
-        "ranking": 124
+        "ranking": 125
       },
       "defense": {
-        "ranking": 89
+        "ranking": 90
+      },
+      "specialTeams": {
+        "ranking": 130
       }
     },
     {
-      "team": "San José State",
-      "rating": -13.9,
-      "ranking": 115,
+      "team": "Buffalo",
+      "rating": -12.2,
+      "ranking": 118,
+      "offense": {
+        "ranking": 131
+      },
+      "defense": {
+        "ranking": 80
+      },
+      "specialTeams": {
+        "ranking": 41
+      }
+    },
+    {
+      "team": "Hawai'i",
+      "rating": -12.6,
+      "ranking": 119,
       "offense": {
         "ranking": 122
       },
       "defense": {
+        "ranking": 100
+      },
+      "specialTeams": {
+        "ranking": 43
+      }
+    },
+    {
+      "team": "Delaware",
+      "rating": -12.9,
+      "ranking": 120,
+      "offense": {
         "ranking": 103
+      },
+      "defense": {
+        "ranking": 121
+      },
+      "specialTeams": {
+        "ranking": 114
+      }
+    },
+    {
+      "team": "Marshall",
+      "rating": -13.2,
+      "ranking": 121,
+      "offense": {
+        "ranking": 93
+      },
+      "defense": {
+        "ranking": 132
+      },
+      "specialTeams": {
+        "ranking": 74
       }
     },
     {
       "team": "Rice",
-      "rating": -14.9,
-      "ranking": 116,
+      "rating": -14.2,
+      "ranking": 122,
+      "offense": {
+        "ranking": 121
+      },
+      "defense": {
+        "ranking": 108
+      },
+      "specialTeams": {
+        "ranking": 106
+      }
+    },
+    {
+      "team": "Eastern Michigan",
+      "rating": -14.4,
+      "ranking": 123,
+      "offense": {
+        "ranking": 116
+      },
+      "defense": {
+        "ranking": 115
+      },
+      "specialTeams": {
+        "ranking": 107
+      }
+    },
+    {
+      "team": "New Mexico State",
+      "rating": -14.5,
+      "ranking": 124,
       "offense": {
         "ranking": 123
       },
       "defense": {
         "ranking": 109
+      },
+      "specialTeams": {
+        "ranking": 110
       }
     },
     {
       "team": "Central Michigan",
-      "rating": -14.9,
-      "ranking": 117,
+      "rating": -16.4,
+      "ranking": 125,
       "offense": {
-        "ranking": 129
+        "ranking": 133
       },
       "defense": {
-        "ranking": 91
-      }
-    },
-    {
-      "team": "Wyoming",
-      "rating": -15,
-      "ranking": 118,
-      "offense": {
-        "ranking": 135
+        "ranking": 107
       },
-      "defense": {
-        "ranking": 81
-      }
-    },
-    {
-      "team": "New Mexico State",
-      "rating": -15.7,
-      "ranking": 119,
-      "offense": {
-        "ranking": 119
-      },
-      "defense": {
-        "ranking": 114
-      }
-    },
-    {
-      "team": "Buffalo",
-      "rating": -16.1,
-      "ranking": 120,
-      "offense": {
-        "ranking": 131
-      },
-      "defense": {
-        "ranking": 104
-      }
-    },
-    {
-      "team": "Sam Houston",
-      "rating": -16.3,
-      "ranking": 121,
-      "offense": {
-        "ranking": 118
-      },
-      "defense": {
-        "ranking": 120
-      }
-    },
-    {
-      "team": "Western Kentucky",
-      "rating": -16.5,
-      "ranking": 122,
-      "offense": {
-        "ranking": 109
-      },
-      "defense": {
-        "ranking": 131
-      }
-    },
-    {
-      "team": "UAB",
-      "rating": -17,
-      "ranking": 123,
-      "offense": {
-        "ranking": 113
-      },
-      "defense": {
-        "ranking": 128
+      "specialTeams": {
+        "ranking": 121
       }
     },
     {
       "team": "Missouri State",
-      "rating": -17.4,
-      "ranking": 124,
+      "rating": -16.6,
+      "ranking": 126,
       "offense": {
-        "ranking": 120
+        "ranking": 115
       },
       "defense": {
+        "ranking": 124
+      },
+      "specialTeams": {
+        "ranking": 123
+      }
+    },
+    {
+      "team": "Sam Houston",
+      "rating": -16.9,
+      "ranking": 127,
+      "offense": {
+        "ranking": 134
+      },
+      "defense": {
+        "ranking": 110
+      },
+      "specialTeams": {
+        "ranking": 113
+      }
+    },
+    {
+      "team": "Southern Miss",
+      "rating": -17.1,
+      "ranking": 128,
+      "offense": {
+        "ranking": 112
+      },
+      "defense": {
+        "ranking": 128
+      },
+      "specialTeams": {
         "ranking": 124
       }
     },
     {
       "team": "Middle Tennessee",
-      "rating": -18.9,
-      "ranking": 125,
-      "offense": {
-        "ranking": 121
-      },
-      "defense": {
-        "ranking": 129
-      }
-    },
-    {
-      "team": "Eastern Michigan",
-      "rating": -18.9,
-      "ranking": 126,
-      "offense": {
-        "ranking": 126
-      },
-      "defense": {
-        "ranking": 122
-      }
-    },
-    {
-      "team": "Southern Miss",
-      "rating": -19.1,
-      "ranking": 127,
-      "offense": {
-        "ranking": 116
-      },
-      "defense": {
-        "ranking": 134
-      }
-    },
-    {
-      "team": "Georgia State",
-      "rating": -19.6,
-      "ranking": 128,
-      "offense": {
-        "ranking": 110
-      },
-      "defense": {
-        "ranking": 137
-      }
-    },
-    {
-      "team": "Northern Illinois",
-      "rating": -19.7,
+      "rating": -17.3,
       "ranking": 129,
       "offense": {
-        "ranking": 130
+        "ranking": 118
       },
       "defense": {
-        "ranking": 117
-      }
-    },
-    {
-      "team": "UTEP",
-      "rating": -19.7,
-      "ranking": 130,
-      "offense": {
-        "ranking": 125
+        "ranking": 127
       },
-      "defense": {
-        "ranking": 126
-      }
-    },
-    {
-      "team": "Massachusetts",
-      "rating": -19.9,
-      "ranking": 131,
-      "offense": {
-        "ranking": 128
-      },
-      "defense": {
-        "ranking": 121
-      }
-    },
-    {
-      "team": "Akron",
-      "rating": -20.8,
-      "ranking": 132,
-      "offense": {
-        "ranking": 136
-      },
-      "defense": {
-        "ranking": 116
-      }
-    },
-    {
-      "team": "Sacramento State",
-      "rating": -20.9,
-      "ranking": 133,
-      "offense": {
-        "ranking": 132
-      },
-      "defense": {
-        "ranking": 123
+      "specialTeams": {
+        "ranking": 56
       }
     },
     {
       "team": "Bowling Green",
-      "rating": -22,
-      "ranking": 134,
+      "rating": -17.9,
+      "ranking": 130,
       "offense": {
-        "ranking": 138
+        "ranking": 129
       },
       "defense": {
-        "ranking": 118
+        "ranking": 116
+      },
+      "specialTeams": {
+        "ranking": 100
+      }
+    },
+    {
+      "team": "Ball State",
+      "rating": -21.5,
+      "ranking": 131,
+      "offense": {
+        "ranking": 124
+      },
+      "defense": {
+        "ranking": 135
+      },
+      "specialTeams": {
+        "ranking": 133
+      }
+    },
+    {
+      "team": "Kent State",
+      "rating": -22.3,
+      "ranking": 132,
+      "offense": {
+        "ranking": 137
+      },
+      "defense": {
+        "ranking": 120
+      },
+      "specialTeams": {
+        "ranking": 136
+      }
+    },
+    {
+      "team": "Akron",
+      "rating": -22.9,
+      "ranking": 133,
+      "offense": {
+        "ranking": 130
+      },
+      "defense": {
+        "ranking": 130
+      },
+      "specialTeams": {
+        "ranking": 138
+      }
+    },
+    {
+      "team": "UTEP",
+      "rating": -24.6,
+      "ranking": 134,
+      "offense": {
+        "ranking": 135
+      },
+      "defense": {
+        "ranking": 131
+      },
+      "specialTeams": {
+        "ranking": 137
       }
     },
     {
       "team": "Charlotte",
-      "rating": -24.1,
+      "rating": -24.8,
       "ranking": 135,
       "offense": {
         "ranking": 127
       },
       "defense": {
-        "ranking": 136
+        "ranking": 137
+      },
+      "specialTeams": {
+        "ranking": 98
       }
     },
     {
-      "team": "Ball State",
-      "rating": -24.3,
+      "team": "Northern Illinois",
+      "rating": -25,
       "ranking": 136,
       "offense": {
-        "ranking": 134
+        "ranking": 136
       },
       "defense": {
-        "ranking": 132
+        "ranking": 134
+      },
+      "specialTeams": {
+        "ranking": 117
       }
     },
     {
-      "team": "Kent State",
-      "rating": -24.8,
+      "team": "Sacramento State",
+      "rating": -26.1,
       "ranking": 137,
       "offense": {
-        "ranking": 133
+        "ranking": 138
       },
       "defense": {
-        "ranking": 135
+        "ranking": 129
+      },
+      "specialTeams": {
+        "ranking": 126
       }
     },
     {
       "team": "UL Monroe",
-      "rating": -28,
+      "rating": -27.4,
       "ranking": 138,
       "offense": {
-        "ranking": 137
+        "ranking": 132
       },
       "defense": {
         "ranking": 138
+      },
+      "specialTeams": {
+        "ranking": 134
       }
     }
   ]
